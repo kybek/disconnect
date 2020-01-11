@@ -17,6 +17,10 @@ var players = {}
 
 var players_classes = {}
 
+var players_turns = {}
+
+var current_turn = 0
+
 # Signals to let lobby GUI know what's going on
 signal player_list_changed()
 signal connection_failed()
@@ -68,7 +72,7 @@ func unregister_player(id):
 	players_classes.erase(id)
 	emit_signal("player_list_changed")
 
-remote func pre_start_game(player_ids):
+remote func pre_start_game():
 	# Change scene
 	var world = load("res://src/world.tscn").instance()
 	get_tree().get_root().add_child(world)
@@ -76,23 +80,35 @@ remote func pre_start_game(player_ids):
 	get_tree().get_root().get_node("lobby").hide()
 
 	var player_scene = load("res://src/player.tscn")
-
-	for p_id in player_ids:
+	
+	var turns = []
+	
+	for x in range(len(players)):
+		turns.append(x)
+	
+	turns.shuffle()
+	
+	var i = 0
+	
+	for p_nid in players.keys():
 		var player = player_scene.instance()
-
-		player.set_name(str(p_id)) # Use unique ID as node name
-		player.set_network_master(p_id) #set unique id as master
-
-		if p_id == get_tree().get_network_unique_id():
+		
+		player.set_name(str(p_nid)) # Use unique ID as node name
+		player.set_network_master(p_nid) #set unique id as master
+		
+		if p_nid == get_tree().get_network_unique_id():
 			# If node for this peer id, set name
 			player.set_player_name(player_name)
 			player.set_class(_class_name)
+			player.set_turn(turns[i])
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(players[p_id])
-			player.set_class(players_classes[p_id])
-
+			player.set_player_name(players[p_nid])
+			player.set_class(players_classes[p_nid])
+			player.set_turn(turns[i])
+		
 		world.get_node("players").add_child(player)
+		i += 1
 	
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start
@@ -107,10 +123,10 @@ var players_ready = []
 
 remote func ready_to_start(id):
 	assert(get_tree().is_network_server())
-
+	
 	if not id in players_ready:
 		players_ready.append(id)
-
+	
 	if players_ready.size() == players.size():
 		for p in players:
 			rpc_id(p, "post_start_game")
@@ -139,18 +155,12 @@ func get_player_name():
 func begin_game():
 	assert(get_tree().is_network_server())
 	
-	var player_ids = []
-	
-	var p_id := 0
+	players[get_tree().get_network_unique_id()] = "BEGIN_GAME"
 	
 	for p in players:
-		player_ids.append(p_id)
-		p_id += 1
+		rpc_id(p, "pre_start_game")
 	
-	for p in players:
-		rpc_id(p, "pre_start_game", player_ids)
-	
-	pre_start_game(player_ids)
+	pre_start_game()
 
 func end_game():
 	if has_node("/root/world"): # Game is in progress

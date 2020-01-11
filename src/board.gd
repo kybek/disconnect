@@ -6,22 +6,33 @@ export var rows : int = 5
 var stones : Dictionary
 
 func last_empty_row(col : int) -> int:
-	assert(col >= 0 && col < cols)
+	if not (col >= 0 && col < cols):
+		print("INVALID COLOUMN NUMBER: " + str(col))
+		return -1
 	
-	for row in range(rows).invert():
+	for row in range(rows - 1, -1, -1):
 		if stones[row][col] == null:
 			return row
 	
 	return -1
 
 
-func move(col : int, by_who : int) -> bool:
+func move(col : int, by_who : int, color : Color) -> bool:
+	print("TRYING TO MAKE A MOVE")
 	var row = last_empty_row(col)
 	
 	if row == -1:
 		return false
 	
-	stones[row][col] = by_who
+	var stone_scene = load("res://src/stone.tscn")
+	var stone = stone_scene.instance()
+	
+	stone.get_node("by_who").text = str(by_who)
+	stone.position = Vector2(col * 64 + 32, row * 64 + 32)
+	stone.modulate = color
+	add_child(stone)
+	stones[row][col] = stone
+	
 	return true
 
 

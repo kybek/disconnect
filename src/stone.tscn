@@ -12,3 +12,8 @@ shader_param/radius = 0.5
 [node name="sprite" type="Sprite" parent="."]
 material = SubResource( 1 )
 texture = ExtResource( 2 )
+
+[node name="by_who" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "asdadsads"

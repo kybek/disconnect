@@ -8,6 +8,7 @@ func _ready():
 	gamestate.connect("game_ended", self, "_on_game_ended")
 	gamestate.connect("game_error", self, "_on_game_error")
 
+
 func _on_host_pressed():
 	if get_node("connect/name").text == "":
 		get_node("connect/error_label").text = "Invalid name!"
@@ -21,6 +22,7 @@ func _on_host_pressed():
 	var _class_name = get_node("class_selection/class_name").text
 	gamestate.host_game(player_name, _class_name)
 	refresh_lobby()
+
 
 func _on_join_pressed():
 	if get_node("connect/name").text == "":
@@ -41,14 +43,17 @@ func _on_join_pressed():
 	gamestate.join_game(ip, player_name, _class_name)
 	# refresh_lobby() gets called by the player_list_changed signal
 
+
 func _on_connection_success():
 	get_node("connect").hide()
 	get_node("players").show()
+
 
 func _on_connection_failed():
 	get_node("connect/host").disabled = false
 	get_node("connect/join").disabled = false
 	get_node("connect/error_label").set_text("Connection failed.")
+
 
 func _on_game_ended():
 	show()
@@ -56,9 +61,11 @@ func _on_game_ended():
 	get_node("players").hide()
 	get_node("connect/host").disabled = false
 
+
 func _on_game_error(errtxt):
 	get_node("error").dialog_text = errtxt
 	get_node("error").popup_centered_minsize()
+
 
 func refresh_lobby():
 	var players = gamestate.get_player_list()
@@ -67,8 +74,9 @@ func refresh_lobby():
 	get_node("players/list").add_item(gamestate.get_player_name() + " (You)")
 	for p in players:
 		get_node("players/list").add_item(p)
-
+	
 	get_node("players/start").disabled = not get_tree().is_network_server()
+
 
 func _on_start_pressed():
 	gamestate.begin_game()
