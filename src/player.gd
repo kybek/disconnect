@@ -5,31 +5,41 @@ puppet var puppet_motion = Vector2()
 
 var _class_name : String = "warrior"
 var color : Color
-var turn : int = 0
+var current_turn : int = 0
+var turn : int = -1
 var player_name
 
-var last_move_is_valid = false
+var can_input := false
 
-# Use sync because it will be called everywhere
-sync func move(row : int, by_who : int, color : Color):
-	last_move_is_valid = get_node("../../board").move(row, by_who, color)
+signal next_turn
+
+remote func move(col : int, by_who : String, color : Color):
+	get_node("../../board").move(col, by_who, color)
 
 
-sync func next_turn() -> void:
-	gamestate.current_turn = (gamestate.current_turn + 1) % get_node("../../players").get_child_count()
+#remotesync func next_turn() -> void:
+#	print(get_node("../../players").get_child_count())
+#	current_turn = (current_turn + 1) % gamestate.player_count # get_node("../../players").get_child_count()
 
 
 func _process(_delta):
-	if Input.is_action_pressed("ui_select"):
-		if gamestate.current_turn == turn:
+	current_turn = gamestate.current_turn
+	
+	if can_input:
+		print(turn, " ", current_turn, " ", gamestate.player_count)
+	
+	if can_input and Input.is_action_just_pressed("ui_select"):
+		print(gamestate.players)
+		if current_turn == turn:
 			var col = floor(get_global_mouse_position().x / 64.0)
 			print("Trying to make a move on col " + str(col))
 			
-			rpc("move", col, get_tree().get_network_unique_id(), color)
+			var last_move_is_valid = get_node("../../board").move(col, player_name, color)
 			
 			if last_move_is_valid:
 				print("Valid move")
-				next_turn()
+				rpc("move", col, player_name, color)
+				emit_signal("next_turn")
 			else:
 				print("Invalid move")
 

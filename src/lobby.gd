@@ -20,7 +20,7 @@ func _on_host_pressed():
 
 	var player_name = get_node("connect/name").text
 	var _class_name = get_node("class_selection/class_name").text
-	gamestate.host_game(player_name, _class_name)
+	gamestate.host_game(player_name)
 	refresh_lobby()
 
 
@@ -40,7 +40,7 @@ func _on_join_pressed():
 
 	var player_name = get_node("connect/name").text
 	var _class_name = get_node("class_selection/class_name").text
-	gamestate.join_game(ip, player_name, _class_name)
+	gamestate.join_game(ip, player_name)
 	# refresh_lobby() gets called by the player_list_changed signal
 
 

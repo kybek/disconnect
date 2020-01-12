@@ -7,19 +7,14 @@ const DEFAULT_PORT = 10567
 const MAX_PEERS = 12
 
 # Name for my player
-var player_name = "The Warrior"
+var player_name := "The Warrior"
 
-# Name of the class
-var _class_name = "warrior"
+var player_count := 1
 
 # Names for remote players in id:name format
-var players = {}
+var players := {}
 
-var players_classes = {}
-
-var players_turns = {}
-
-var current_turn = 0
+remote var current_turn := 0
 
 # Signals to let lobby GUI know what's going on
 signal player_list_changed()
@@ -31,7 +26,7 @@ signal game_error(what)
 # Callback from SceneTree
 func _player_connected(id):
 	# Registration of a client beings here, tell the connected player that we are here
-	rpc_id(id, "register_player", player_name, _class_name)
+	rpc_id(id, "register_player", player_name)
 
 # Callback from SceneTree
 func _player_disconnected(id):
@@ -60,19 +55,17 @@ func _connected_fail():
 
 # Lobby management functions
 
-remote func register_player(new_player_name, new_player_class_name):
+remote func register_player(new_player_name):
 	var id = get_tree().get_rpc_sender_id()
 	print(id)
 	players[id] = new_player_name
-	players_classes[id] = new_player_class_name
 	emit_signal("player_list_changed")
 
 func unregister_player(id):
 	players.erase(id)
-	players_classes.erase(id)
 	emit_signal("player_list_changed")
 
-remote func pre_start_game():
+remote func pre_start_game(spawn_points : Dictionary):
 	# Change scene
 	var world = load("res://src/world.tscn").instance()
 	get_tree().get_root().add_child(world)
@@ -81,35 +74,37 @@ remote func pre_start_game():
 
 	var player_scene = load("res://src/player.tscn")
 	
-	var turns = []
+#	var _turn = 1
 	
-	for x in range(len(players)):
-		turns.append(x)
+	player_count = len(spawn_points)
 	
-	turns.shuffle()
-	
-	var i = 0
-	
-	for p_nid in players.keys():
+	for p_id in spawn_points:
+		var spawn_pos = world.get_node("spawn_points/" + str(spawn_points[p_id])).position
 		var player = player_scene.instance()
 		
-		player.set_name(str(p_nid)) # Use unique ID as node name
-		player.set_network_master(p_nid) #set unique id as master
+		player.set_name(str(p_id)) # Use unique ID as node name
+		player.position=spawn_pos
+		player.turn=spawn_points[p_id]
+#		print("CHANGED TURN")
+		player.set_network_master(p_id) #set unique id as master
 		
-		if p_nid == get_tree().get_network_unique_id():
+		if p_id == get_tree().get_network_unique_id():
 			# If node for this peer id, set name
 			player.set_player_name(player_name)
-			player.set_class(_class_name)
-			player.set_turn(turns[i])
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(players[p_nid])
-			player.set_class(players_classes[p_nid])
-			player.set_turn(turns[i])
+			player.set_player_name(players[p_id])
 		
+		if p_id == get_tree().get_network_unique_id():
+			player.connect("next_turn", self, "_next_turn")
+			player.can_input = true
 		world.get_node("players").add_child(player)
-		i += 1
 	
+	# Set up score
+	world.get_node("score").add_player(get_tree().get_network_unique_id(), player_name)
+	for pn in players:
+		world.get_node("score").add_player(pn, players[pn])
+
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start
 		rpc_id(1, "ready_to_start", get_tree().get_network_unique_id())
@@ -123,25 +118,23 @@ var players_ready = []
 
 remote func ready_to_start(id):
 	assert(get_tree().is_network_server())
-	
+
 	if not id in players_ready:
 		players_ready.append(id)
-	
+
 	if players_ready.size() == players.size():
 		for p in players:
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
-func host_game(new_player_name, new_player_class_name):
+func host_game(new_player_name):
 	player_name = new_player_name
-	_class_name = new_player_class_name
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 
-func join_game(ip, new_player_name, new_player_class_name):
+func join_game(ip, new_player_name):
 	player_name = new_player_name
-	_class_name = new_player_class_name
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
@@ -154,13 +147,19 @@ func get_player_name():
 
 func begin_game():
 	assert(get_tree().is_network_server())
-	
-	players[get_tree().get_network_unique_id()] = "BEGIN_GAME"
-	
+
+	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing
+	var spawn_points = {}
+	spawn_points[1] = 0 # Server in spawn point 0
+	var spawn_point_idx = 1
 	for p in players:
-		rpc_id(p, "pre_start_game")
-	
-	pre_start_game()
+		spawn_points[p] = spawn_point_idx
+		spawn_point_idx += 1
+	# Call to pre-start game with the spawn points
+	for p in players:
+		rpc_id(p, "pre_start_game", spawn_points)
+
+	pre_start_game(spawn_points)
 
 func end_game():
 	if has_node("/root/world"): # Game is in progress
@@ -170,6 +169,14 @@ func end_game():
 	emit_signal("game_ended")
 	players.clear()
 	get_tree().set_network_peer(null) # End networking
+
+func update_turn():
+	rset("current_turn", current_turn)
+
+func _next_turn():
+	assert(player_count > 0)
+	current_turn = (current_turn + 1) % player_count
+	update_turn()
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")

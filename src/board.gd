@@ -17,7 +17,8 @@ func last_empty_row(col : int) -> int:
 	return -1
 
 
-func move(col : int, by_who : int, color : Color) -> bool:
+func move(col : int, by_who : String, color : Color) -> bool:
+	print(col, by_who, color)
 	print("TRYING TO MAKE A MOVE")
 	var row = last_empty_row(col)
 	

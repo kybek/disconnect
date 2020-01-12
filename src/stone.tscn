@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/round_shader.shader" type="Shader" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -7,6 +7,13 @@
 shader = ExtResource( 1 )
 shader_param/radius = 0.5
 
+[sub_resource type="DynamicFontData" id=2]
+font_path = "res://assets/montserrat.otf"
+
+[sub_resource type="DynamicFont" id=3]
+size = 11
+font_data = SubResource( 2 )
+
 [node name="stone" type="Node2D"]
 
 [node name="sprite" type="Sprite" parent="."]
@@ -14,6 +21,13 @@ material = SubResource( 1 )
 texture = ExtResource( 2 )
 
 [node name="by_who" type="Label" parent="."]
-margin_right = 40.0
-margin_bottom = 14.0
+margin_left = -32.0
+margin_top = -32.0
+margin_right = 32.0
+margin_bottom = 32.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "asdadsads"
+align = 1
+valign = 1
+autowrap = true
