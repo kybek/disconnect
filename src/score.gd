@@ -12,8 +12,8 @@ func _process(_delta):
 				winner_score = player_labels[p].score
 				winner_name = player_labels[p].name
 
-		get_node("../winner").set_text("THE WINNER IS:\n" + winner_name)
-		get_node("../winner").show()
+#		get_node("../winner").set_text("THE WINNER IS:\n" + winner_name)
+#		get_node("../winner").show()
 
 sync func increase_score(for_who):
 	assert(for_who in player_labels)
@@ -35,7 +35,7 @@ func add_player(id, new_player_name):
 	player_labels[id] = { name = new_player_name, label = l, score = 0 }
 
 func _ready():
-	get_node("../winner").hide()
+#	get_node("../winner").hide()
 	set_process(true)
 
 func _on_exit_game_pressed():

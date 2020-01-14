@@ -1,7 +1,7 @@
 extends Node2D
 
-export var cols : int = 5
-export var rows : int = 5
+export var cols : int = 15
+export var rows : int = 9
 
 var stones : Dictionary
 
@@ -44,3 +44,5 @@ func _ready():
 		
 		for col in range(0, cols):
 			stones[row][col] = null
+	
+	get_node("../background").rect_size = Vector2(cols * 64.0, rows * 64.0)
