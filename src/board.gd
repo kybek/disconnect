@@ -81,6 +81,12 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	return true
 
 
+func _input(event):
+	if event is InputEventMouse:
+		var col = floor(get_global_mouse_position().x / 64.0)
+		get_node("../background/highlight").rect_position = Vector2(col * 64.0, 0.0)
+
+
 func _ready():
 	for row in range(0, rows):
 		if not stones.has(row):
@@ -90,3 +96,4 @@ func _ready():
 			stones[row][col] = null
 	
 	get_node("../background").rect_size = Vector2(cols * 64.0, rows * 64.0)
+	get_node("../background/highlight").rect_size = Vector2(64.0, rows * 64.0)
