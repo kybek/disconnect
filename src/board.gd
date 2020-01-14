@@ -49,14 +49,16 @@ func four_connect(row : int, col : int, dir : Array, color : Color) -> bool:
 	return true
 
 
-func how_many(row : int, col : int, color : Color) -> int:
+func how_many(color : Color) -> int:
 	var cnt : int = 0
 	
-	for dir in dirs:
-		if four_connect(row, col, dir, color):
-			cnt += 1
+	for row in range(0, rows):
+		for col in range(0, cols):
+			for dir in dirs:
+				if four_connect(row, col, dir, color):
+					cnt += 1
 	
-	return cnt
+	return cnt / 2
 
 func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	print(col, by_who, color)
@@ -65,6 +67,8 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	
 	if row == -1:
 		return false
+	
+	var score_before = how_many(color)
 	
 	var stone_scene = load("res://src/stone.tscn")
 	var stone = stone_scene.instance()
@@ -75,7 +79,9 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	add_child(stone)
 	stones[row][col] = stone
 	
-	for i in range(how_many(row, col, color)):
+	var score_after = how_many(color)
+	
+	for i in range(score_after - score_before):
 		emit_signal("increase_score", id)
 	
 	return true
