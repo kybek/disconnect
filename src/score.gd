@@ -3,14 +3,15 @@ extends HBoxContainer
 var player_labels = {}
 
 func _process(_delta):
-	var rocks_left = 0 # get_node("../rocks").get_child_count()
-	if rocks_left == 0:
-		var winner_name = ""
-		var winner_score = -1
-		for p in player_labels:
-			if player_labels[p].score > winner_score:
-				winner_score = player_labels[p].score
-				winner_name = player_labels[p].name
+	pass
+#	var rocks_left = 0 # get_node("../rocks").get_child_count()
+#	if rocks_left == 0:
+#		var winner_name = ""
+#		var winner_score = -1
+#		for p in player_labels:
+#			if player_labels[p].score > winner_score:
+#				winner_score = player_labels[p].score
+#				winner_name = player_labels[p].name
 
 #		get_node("../winner").set_text("THE WINNER IS:\n" + winner_name)
 #		get_node("../winner").show()
@@ -40,3 +41,6 @@ func _ready():
 
 func _on_exit_game_pressed():
 	gamestate.end_game()
+
+func _on_board_increase_score(who):
+	increase_score(who)

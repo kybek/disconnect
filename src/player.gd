@@ -14,7 +14,7 @@ var can_input := false
 signal next_turn
 
 remote func move(col : int, by_who : String, color : Color):
-	get_node("../../board").move(col, by_who, color)
+	get_node("../../board").move(col, by_who, get_tree().get_network_unique_id(), color)
 
 
 #remotesync func next_turn() -> void:
@@ -34,7 +34,7 @@ func _process(_delta):
 			var col = floor(get_global_mouse_position().x / 64.0)
 			print("Trying to make a move on col " + str(col))
 			
-			var last_move_is_valid = get_node("../../board").move(col, player_name, color)
+			var last_move_is_valid = get_node("../../board").move(col, player_name, get_tree().get_network_unique_id(), color)
 			
 			if last_move_is_valid:
 				print("Valid move")

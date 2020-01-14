@@ -19,6 +19,7 @@ stretch_mode = 2
 [node name="turns" type="Node2D" parent="."]
 
 [node name="spawn_points" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="0" type="Position2D" parent="spawn_points"]
 
@@ -40,3 +41,4 @@ margin_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 3 )
+[connection signal="increase_score" from="board" to="score" method="_on_board_increase_score"]
