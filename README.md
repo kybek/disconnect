@@ -8,6 +8,7 @@ Clone this repository
 `git clone https://github.com/EnoughSensei/disconnect/`
 or download the latest release.
 
-Download godot from godotengine.org/download
+Download godot from https://godotengine.org/download
+
 Run godot, and select `Import` then open the downloaded directory and select `project.godot`
 Press F5 to play
