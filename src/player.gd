@@ -26,7 +26,8 @@ func _process(_delta):
 	current_turn = gamestate.current_turn
 	
 	if can_input:
-		print(turn, " ", current_turn, " ", gamestate.player_count)
+#		print(turn, " ", current_turn, " ", gamestate.player_count)
+		pass
 	
 	if can_input and Input.is_action_just_pressed("ui_select"):
 		print(gamestate.players)
