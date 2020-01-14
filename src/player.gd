@@ -14,7 +14,7 @@ var can_input := false
 signal next_turn
 
 remote func move(col : int, by_who : String, color : Color):
-	get_node("../../board").move(col, by_who, get_tree().get_network_unique_id(), color)
+	get_node("../../board").move(col, by_who, get_tree().get_rpc_sender_id(), color)
 
 
 #remotesync func next_turn() -> void:

@@ -14,6 +14,8 @@ var player_count := 1
 # Names for remote players in id:name format
 var players := {}
 
+var myIds := {}
+
 remote var current_turn := 0
 
 # Signals to let lobby GUI know what's going on
