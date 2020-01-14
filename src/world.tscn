@@ -41,4 +41,8 @@ margin_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 3 )
+
+[node name="current_turn" type="Label" parent="score"]
+margin_top = 13.0
+margin_bottom = 27.0
 [connection signal="increase_score" from="board" to="score" method="_on_board_increase_score"]
