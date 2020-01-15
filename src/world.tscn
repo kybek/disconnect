@@ -5,7 +5,7 @@
 [ext_resource path="res://src/board.tscn" type="PackedScene" id=3]
 [ext_resource path="res://src/score.gd" type="Script" id=4]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
 
 [node name="world" type="Node2D"]
@@ -17,7 +17,7 @@ texture = ExtResource( 1 )
 stretch_mode = 2
 
 [node name="highlight" type="TextureRect" parent="background"]
-material = SubResource( 2 )
+material = SubResource( 1 )
 margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 1 )
@@ -52,8 +52,4 @@ margin_bottom = 40.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 4 )
-
-[node name="current_turn" type="Label" parent="score"]
-margin_top = 13.0
-margin_bottom = 27.0
 [connection signal="increase_score" from="board" to="score" method="_on_board_increase_score"]
