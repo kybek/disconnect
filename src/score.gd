@@ -23,7 +23,7 @@ sync func increase_score(for_who):
 	pl.label.set_text(pl.name + "\n" + str(pl.score))
 
 func add_player(id, new_player_name):
-	var l = Label.new()
+	var l : Label = Label.new()
 	l.set_align(Label.ALIGN_CENTER)
 	l.set_text(new_player_name + "\n" + "0")
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
@@ -31,12 +31,43 @@ func add_player(id, new_player_name):
 	font.set_size(18)
 	font.set_font_data(preload("res://assets/montserrat.otf"))
 	l.add_font_override("font", font)
+	l.set("custom_colors/font_color", Color(0.0, 0.0, 0.0, 1.0))
 	add_child(l)
 
 	player_labels[id] = { name = new_player_name, label = l, score = 0 }
 
+
+
+func update_current_player():
+	var current_turn := gamestate.current_turn
+	var current_player := ""
+	
+	current_turn += 1
+	
+	for pl in gamestate.players:
+		if current_turn <= 0:
+			break
+		
+		current_player = pl
+		current_turn -= 1
+	
+	get_node("current_player").set_text("Current Player\n" + current_player)
+
 func _ready():
 #	get_node("../winner").hide()
+	
+	var l : Label = Label.new()
+	l.name = "current_player"
+	l.set_align(Label.ALIGN_CENTER)
+	l.set_text("Current Player\n")
+	l.set_h_size_flags(SIZE_EXPAND_FILL)
+	var font = DynamicFont.new()
+	font.set_size(18)
+	font.set_font_data(preload("res://assets/montserrat.otf"))
+	l.add_font_override("font", font)
+	l.set("custom_colors/font_color", Color(0.0, 0.0, 0.0, 1.0))
+	add_child(l)
+	
 	set_process(true)
 
 func _on_exit_game_pressed():

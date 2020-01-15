@@ -13,9 +13,9 @@ void fragment () {
 //		COLOR = vec4(texture(TEXTURE, UV).xyz, 1.0);
 //	}
 	if (dist > radius) {
-		COLOR = vec4(0.0, 0.0, 0.0, 0.0);
+		COLOR = vec4(1.0, 1.0, 1.0, 0.0);
 	}
 	else {
-		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+		COLOR = vec4(1.0, 1.0, 1.0, 1.0);
 	}
 }
