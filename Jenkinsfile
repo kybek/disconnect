@@ -13,7 +13,6 @@ pipeline {
                 '''
                 timeout(time: 15, unit: 'SECONDS') {
                     sh '''
-                        set +e
                         godot_server -export_debug 'Linux X11' builds/linux/[Linux]disconnect
                         godot_server -export_debug 'Windows Desktop' builds/windows/[Windows]disconnect.exe
                         echo
