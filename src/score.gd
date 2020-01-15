@@ -28,9 +28,9 @@ func add_player(id, new_player_name):
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
 	var font = DynamicFont.new()
 	font.set_size(18)
-	font.set_font_data(preload("res://assets/montserrat.otf"))
+	font.set_font_data(preload("res://assets/fonts/octavius.ttf"))
 	l.add_font_override("font", font)
-	l.set("custom_colors/font_color", Color(0.0, 0.0, 0.0, 1.0))
+	l.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
 	add_child(l)
 
 	player_labels[id] = { name = new_player_name, label = l, score = 0 }
@@ -64,7 +64,7 @@ func _ready():
 	l.set_h_size_flags(SIZE_EXPAND_FILL)
 	var font = DynamicFont.new()
 	font.set_size(18)
-	font.set_font_data(preload("res://assets/montserrat.otf"))
+	font.set_font_data(preload("res://assets/fonts/octavius.ttf"))
 	l.add_font_override("font", font)
 	l.set("custom_colors/font_color", Color(0.0, 0.0, 0.0, 1.0))
 	add_child(l)

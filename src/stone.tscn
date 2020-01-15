@@ -11,7 +11,7 @@ shader_param/radius = 0.5
 font_path = "res://assets/montserrat.otf"
 
 [sub_resource type="DynamicFont" id=3]
-size = 11
+size = 12
 font_data = SubResource( 2 )
 
 [node name="stone" type="Node2D"]

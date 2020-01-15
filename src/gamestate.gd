@@ -108,7 +108,7 @@ remote func pre_start_game(spawn_points : Dictionary, rows : int, cols : int):
 		world.get_node("players").add_child(player)
 	
 	# Set up score
-	world.get_node("score").add_player(get_tree().get_network_unique_id(), player_name)
+#	world.get_node("score").add_player(get_tree().get_network_unique_id(), player_name)
 	for pn in players:
 		world.get_node("score").add_player(pn, players[pn])
 

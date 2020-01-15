@@ -58,4 +58,5 @@ func set_class(new_class):
 
 
 func _ready():
+	randomize()
 	color = Color(randf(), randf(), randf(), 1.0)
