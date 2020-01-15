@@ -21,8 +21,8 @@ pipeline {
                 }
                 retry(3) {
                     sh '''
-                        zip -rj builds/disconnect-$BUILD_NUMBER-Linux.zip builds/linux/*
-                        zip -rj builds/disconnect-$BUILD_NUMBER-Windows.zip builds/windows/*
+                        zip -rj builds/disconnect-$BUILD_NUMBER-Linux.zip builds/linux/[Linux]disconnect.*
+                        zip -rj builds/disconnect-$BUILD_NUMBER-Windows.zip builds/windows/[Windows]disconnect.*
                     '''
                 }
             }
