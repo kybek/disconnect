@@ -116,8 +116,43 @@ size_flags_vertical = 0
 custom_colors/font_color = Color( 0.820312, 0.291595, 0.291595, 1 )
 align = 1
 
+[node name="board_sizes" type="HBoxContainer" parent="connect"]
+margin_left = 14.0
+margin_top = 123.0
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="col_label" type="Label" parent="connect/board_sizes"]
+margin_right = 68.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "Coloumns:"
+
+[node name="cols" type="LineEdit" parent="connect/board_sizes"]
+margin_left = 72.0
+margin_right = 130.0
+margin_bottom = 24.0
+text = "7"
+align = 1
+
+[node name="row_label" type="Label" parent="connect/board_sizes"]
+margin_left = 134.0
+margin_right = 171.0
+margin_bottom = 14.0
+size_flags_horizontal = 2
+size_flags_vertical = 0
+text = "Rows:"
+
+[node name="rows" type="LineEdit" parent="connect/board_sizes"]
+margin_left = 175.0
+margin_right = 233.0
+margin_bottom = 24.0
+text = "6"
+align = 1
+
 [node name="error" type="AcceptDialog" parent="."]
-margin_right = 55.0
+margin_right = 83.0
 margin_bottom = 58.0
 size_flags_horizontal = 2
 size_flags_vertical = 2

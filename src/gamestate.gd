@@ -67,12 +67,14 @@ func unregister_player(id):
 	players.erase(id)
 	emit_signal("player_list_changed")
 
-remote func pre_start_game(spawn_points : Dictionary):
+remote func pre_start_game(spawn_points : Dictionary, rows : int, cols : int):
 	# Change scene
 	var world = load("res://src/world.tscn").instance()
 	get_tree().get_root().add_child(world)
-
 	get_tree().get_root().get_node("lobby").hide()
+	world.get_node("board").make_board(rows, cols)
+	
+#	get_tree().get_root().set_size(Vector2(cols * 64.0, rows * 64.0))
 
 	var player_scene = load("res://src/player.tscn")
 	
@@ -129,7 +131,7 @@ remote func ready_to_start(id):
 			rpc_id(p, "post_start_game")
 		post_start_game()
 
-func host_game(new_player_name):
+func host_game(new_player_name : String):
 	player_name = new_player_name
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
@@ -147,7 +149,7 @@ func get_player_list():
 func get_player_name():
 	return player_name
 
-func begin_game():
+func begin_game(rows : int, cols : int):
 	assert(get_tree().is_network_server())
 
 	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing
@@ -159,9 +161,9 @@ func begin_game():
 		spawn_point_idx += 1
 	# Call to pre-start game with the spawn points
 	for p in players:
-		rpc_id(p, "pre_start_game", spawn_points)
+		rpc_id(p, "pre_start_game", spawn_points, rows, cols)
 
-	pre_start_game(spawn_points)
+	pre_start_game(spawn_points, rows, cols)
 
 func end_game():
 	if has_node("/root/world"): # Game is in progress

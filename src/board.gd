@@ -1,9 +1,9 @@
 extends Node2D
 
-export var cols : int = 15
+export var cols : int = 16
 export var rows : int = 9
 
-var stones : Dictionary
+var stones := {}
 
 signal increase_score(who)
 
@@ -63,6 +63,8 @@ func how_many(color : Color) -> int:
 func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	print(col, by_who, color)
 	print("TRYING TO MAKE A MOVE")
+	assert(stones != {})
+	
 	var row = last_empty_row(col)
 	
 	if row == -1:
@@ -90,10 +92,27 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 func _input(event):
 	if event is InputEventMouse:
 		var col = floor(get_global_mouse_position().x / 64.0)
-		get_node("../background/highlight").rect_position = Vector2(col * 64.0, 0.0)
+		
+		if col < cols:
+			get_node("../background/highlight").rect_position = Vector2(col * 64.0, 0.0)
 
 
-func _ready():
+func make_board(rows : int, cols : int):
+	assert(rows > 0 and rows <= 9)
+	assert(cols > 0 and cols <= 16)
+	
+	self.rows = rows
+	self.cols = cols
+	
+	for row in stones.keys():
+		for col in stones[row].keys():
+			var stone = stones[row][col]
+			
+			if stone != null:
+				remove_child(stone)
+	
+	stones = {}
+	
 	for row in range(0, rows):
 		if not stones.has(row):
 			stones[row] = {}
@@ -103,3 +122,8 @@ func _ready():
 	
 	get_node("../background").rect_size = Vector2(cols * 64.0, rows * 64.0)
 	get_node("../background/highlight").rect_size = Vector2(64.0, rows * 64.0)
+
+
+func _ready():
+#	make_board(9, 16)
+	pass

@@ -79,7 +79,7 @@ func refresh_lobby():
 
 
 func _on_start_pressed():
-	gamestate.begin_game()
+	gamestate.begin_game(int(get_node("connect/board_sizes/rows").text), int(get_node("connect/board_sizes/cols").text))
 
 
 func _on_warrior_pressed():
