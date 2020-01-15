@@ -11,19 +11,15 @@ pipeline {
                     mkdir builds/linux
                     mkdir builds/windows
                 '''
-                timeout(time: 15, unit: 'SECONDS') {
-                    sh '''
-                        godot_server -export_debug 'Linux X11' builds/linux/[Linux]disconnect
-                        godot_server -export_debug 'Windows Desktop' builds/windows/[Windows]disconnect.exe
-                        echo
-                    '''
-                }
-                retry(3) {
-                    sh '''
-                        zip -rj builds/disconnect-$BUILD_NUMBER-Linux.zip builds/linux/[Linux]disconnect.*
-                        zip -rj builds/disconnect-$BUILD_NUMBER-Windows.zip builds/windows/[Windows]disconnect.*
-                    '''
-                }
+                sh '''
+                    godot_server -export_debug 'Linux X11' builds/linux/[Linux]disconnect
+                    godot_server -export_debug 'Windows Desktop' builds/windows/[Windows]disconnect.exe
+                    echo
+                '''
+                sh '''
+                    zip -rj builds/disconnect-$BUILD_NUMBER-Linux.zip builds/linux/*
+                    zip -rj builds/disconnect-$BUILD_NUMBER-Windows.zip builds/windows/*
+                '''
             }
         }
     }
