@@ -12,8 +12,8 @@ pipeline {
                     mkdir builds/windows
                 '''
                 sh '''
-                    godot_server -export_debug 'Linux X11' builds/linux/[Linux]disconnect
-                    godot_server -export_debug 'Windows Desktop' builds/windows/[Windows]disconnect.exe
+                    godot_server -export_debug 'Linux X11' builds/linux/disconnect
+                    godot_server -export_debug 'Windows Desktop' builds/windows/disconnect.exe
                     echo
                 '''
                 sh '''
