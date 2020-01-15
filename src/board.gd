@@ -75,7 +75,7 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	
 	stone.get_node("by_who").text = str(by_who)
 	stone.position = Vector2(col * 64 + 32, row * 64 + 32)
-	stone.modulate = color
+	stone.get_node("sprite").modulate = color
 	add_child(stone)
 	stones[row][col] = stone
 	
