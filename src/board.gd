@@ -40,7 +40,7 @@ func four_connect(row : int, col : int, dir : Array, color : Color) -> bool:
 		if out_of_range(row, col):
 			return false
 		
-		if stones[row][col] == null or stones[row][col].modulate != color:
+		if stones[row][col] == null or stones[row][col].get_node("sprite").modulate != color:
 			return false
 		
 		row += dir[0]
