@@ -18,8 +18,8 @@ pipeline {
                     echo
                 '''
                 sh '''
-                    zip -rj builds/PepperCarrotGame-master-$BUILD_NUMBER-Linux.zip builds/linux/*
-                    zip -rj builds/PepperCarrotGame-master-$BUILD_NUMBER-Windows.zip builds/windows/*
+                    zip -rj builds/disconnect-$BUILD_NUMBER-Linux.zip builds/Linux/*
+                    zip -rj builds/disconnect-$BUILD_NUMBER-Windows.zip builds/Windows/*
                 '''
             }
         }
