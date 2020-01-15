@@ -21,7 +21,7 @@ stretch_mode = 2
 material = SubResource( 1 )
 margin_right = 40.0
 margin_bottom = 40.0
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="players" type="Node2D" parent="."]
