@@ -14,7 +14,7 @@ var player_count := 1
 # Names for remote players in id:name format
 var players := {}
 
-var myIds := {}
+var player_names := {}
 
 remote var current_turn := 0
 
@@ -68,6 +68,9 @@ func unregister_player(id):
 	emit_signal("player_list_changed")
 
 remote func pre_start_game(spawn_points : Dictionary, rows : int, cols : int):
+	player_names = players
+	player_names[get_tree().get_network_unique_id()] = player_name
+	
 	# Change scene
 	var world = load("res://src/world.tscn").instance()
 	get_tree().get_root().add_child(world)
@@ -176,6 +179,7 @@ func end_game():
 
 func update_turn():
 	rset("current_turn", current_turn)
+	get_tree().get_root().get_node("world/score").update_current_player()
 
 func _next_turn():
 	assert(player_count > 0)

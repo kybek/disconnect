@@ -2,8 +2,7 @@ extends HBoxContainer
 
 var player_labels = {}
 
-func _process(_delta):
-	pass
+#func _process(_delta):
 #	var rocks_left = 0 # get_node("../rocks").get_child_count()
 #	if rocks_left == 0:
 #		var winner_name = ""
@@ -44,7 +43,8 @@ func update_current_player():
 	
 	current_turn += 1
 	
-	for pl in gamestate.players:
+	for pl in gamestate.player_names.values():
+		print(current_turn, pl)
 		if current_turn <= 0:
 			break
 		
@@ -52,6 +52,7 @@ func update_current_player():
 		current_turn -= 1
 	
 	get_node("current_player").set_text("Current Player\n" + current_player)
+
 
 func _ready():
 #	get_node("../winner").hide()

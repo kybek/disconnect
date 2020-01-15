@@ -57,4 +57,7 @@ script = ExtResource( 5 )
 [node name="current_turn" type="Label" parent="score"]
 margin_top = 13.0
 margin_bottom = 27.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
 [connection signal="increase_score" from="board" to="score" method="_on_board_increase_score"]

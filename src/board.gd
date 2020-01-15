@@ -122,6 +122,9 @@ func make_board(rows : int, cols : int):
 	
 	get_node("../background").rect_size = Vector2(cols * 64.0, rows * 64.0)
 	get_node("../background/highlight").rect_size = Vector2(64.0, rows * 64.0)
+	get_node("../Camera2D").position = Vector2(cols * 64.0 / 2, rows * 64.0 / 2)
+	get_node("../score").rect_position = Vector2(cols * 64.0 / 2 - 512, rows * 64.0 / 2 - 300)
+	get_node("../score").update_current_player()
 
 
 func _ready():

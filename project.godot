@@ -17,7 +17,8 @@ _global_script_class_icons={
 
 config/name="Disconnect"
 run/main_scene="res://src/lobby.tscn"
-config/icon="res://icon.png"
+boot_splash/bg_color=Color( 0.054902, 0.6, 0.235294, 1 )
+config/icon="res://assets/grass_tile.png"
 
 [autoload]
 
@@ -25,4 +26,5 @@ gamestate="*res://src/gamestate.gd"
 
 [rendering]
 
+environment/default_clear_color=Color( 0.0705882, 0.498039, 0.643137, 1 )
 environment/default_environment="res://default_env.tres"
