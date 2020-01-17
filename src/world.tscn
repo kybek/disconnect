@@ -31,23 +31,6 @@ stretch_mode = 2
 
 [node name="turns" type="Node2D" parent="."]
 
-[node name="spawn_points" type="Node2D" parent="."]
-editor/display_folded = true
-
-[node name="0" type="Position2D" parent="spawn_points"]
-
-[node name="1" type="Position2D" parent="spawn_points"]
-
-[node name="2" type="Position2D" parent="spawn_points"]
-
-[node name="3" type="Position2D" parent="spawn_points"]
-
-[node name="4" type="Position2D" parent="spawn_points"]
-
-[node name="5" type="Position2D" parent="spawn_points"]
-
-[node name="6" type="Position2D" parent="spawn_points"]
-
 [node name="score" type="HBoxContainer" parent="."]
 margin_right = 1024.0
 margin_bottom = 40.0

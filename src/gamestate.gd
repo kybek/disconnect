@@ -71,7 +71,7 @@ func unregister_player(id) -> void:
 	emit_signal("player_list_changed")
 
 # Set the game world and players for given parameters
-remote func pre_start_game(spawn_points: Dictionary, rows: int, cols: int) -> void:
+remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 	player_names = players
 	player_names[get_tree().get_network_unique_id()] = player_name
 	
@@ -83,26 +83,24 @@ remote func pre_start_game(spawn_points: Dictionary, rows: int, cols: int) -> vo
 	
 	var player_scene = load("res://src/player.tscn")
 	
-	player_count = len(spawn_points)
+	player_count = len(order)
 	
-	for p_id in spawn_points:
-		var spawn_pos = world.get_node("spawn_points/" + str(spawn_points[p_id])).position
+	for player_id in order:
 		var player = player_scene.instance()
 		
-		player.set_name(str(p_id)) # Use unique ID as node name
-		player.position=spawn_pos
-		player.turn=spawn_points[p_id]
-		player_turns[spawn_points[p_id]] = p_id
-		player.set_network_master(p_id) #set unique id as master
+		player.set_name(str(player_id)) # Use unique ID as node name
+		player.my_turn = order[player_id]
+		player_turns[order[player_id]] = player_id
+		player.set_network_master(player_id) #set unique id as master
 		
-		if p_id == get_tree().get_network_unique_id():
+		if player_id == get_tree().get_network_unique_id():
 			# If node for this peer id, set name
 			player.set_player_name(player_name)
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(players[p_id])
+			player.set_player_name(players[player_id])
 		
-		if p_id == get_tree().get_network_unique_id():
+		if player_id == get_tree().get_network_unique_id():
 			player.connect("next_turn", self, "_next_turn")
 			player.can_input = true
 		world.get_node("players").add_child(player)
@@ -164,18 +162,18 @@ func get_player_name() -> String:
 func begin_game(rows: int, cols: int) -> void:
 	assert(get_tree().is_network_server())
 	
-	# Create a dictionary with peer id and respective spawn points, could be improved by randomizing
-	var spawn_points = {}
-	spawn_points[1] = 0 # Server in spawn point 0
-	var spawn_point_idx = 1
+	var order = {}
+	order[1] = 0 # Server in spawn point 0
+	var order_id = 1
+	
 	for p in players:
-		spawn_points[p] = spawn_point_idx
-		spawn_point_idx += 1
+		order[p] = order_id
+		order_id += 1
 	# Call to pre-start game with the spawn points
 	for p in players:
-		rpc_id(p, "pre_start_game", spawn_points, rows, cols)
+		rpc_id(p, "pre_start_game", order, rows, cols)
 	
-	pre_start_game(spawn_points, rows, cols)
+	pre_start_game(order, rows, cols)
 
 
 func end_game() -> void:
