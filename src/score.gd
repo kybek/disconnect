@@ -16,6 +16,16 @@ sync func increase_score(player_id: int) -> void:
 	# Update the text on the entry's label
 	player_entry.label.set_text(player_entry.name + "\n" + str(player_entry.score))
 
+# Decreases score on all peers for specified player
+sync func decrease_score(player_id: int) -> void:
+	assert(player_id in player_labels)
+	# Find the player_entry using player_id
+	var player_entry : Dictionary = player_labels[player_id]
+	# Increase the score of the entry
+	player_entry.score -= 1
+	# Update the text on the entry's label
+	player_entry.label.set_text(player_entry.name + "\n" + str(player_entry.score))
+
 # Add a new player to score table
 func add_player(player_id: int, player_name: String) -> void:
 	assert(not player_id in player_labels)
@@ -79,3 +89,7 @@ func _on_exit_game_pressed():
 
 func _on_board_increased_score(who: int):
 	increase_score(who)
+
+
+func _on_board_decreased_score(who):
+	decrease_score(who)

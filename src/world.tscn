@@ -53,4 +53,5 @@ margin_right = 1024.0
 margin_bottom = 600.0
 texture = ExtResource( 6 )
 stretch_mode = 2
+[connection signal="decreased_score" from="board" to="score" method="_on_board_decreased_score"]
 [connection signal="increased_score" from="board" to="score" method="_on_board_increased_score"]

@@ -18,7 +18,6 @@ remote func move(col: int, by_who: String, color: Color) -> void:
 
 
 sync func undo_last_move() -> void:
-	print_debug("UNDO LAST MOVE")
 	get_node("../../board").undo_last_move()
 
 

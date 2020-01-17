@@ -103,7 +103,6 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 		else:
 			# Otherwise set name from peer
 			player.set_player_name(players[player_id])
-#			player.set_power_name(powers[player_id])
 		
 		if player_id == get_tree().get_network_unique_id():
 			player.connect("next_turn", self, "_next_turn")
