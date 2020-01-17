@@ -49,6 +49,10 @@ func update_current_player() -> void:
 	get_node("current_player").set_text("Current Player\n" + current_player_name)
 
 
+func _process(delta):
+	update_current_player()
+
+
 func _ready():
 	# Create current player label
 	var label: Label = Label.new()

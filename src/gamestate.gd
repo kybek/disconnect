@@ -196,7 +196,7 @@ func end_game() -> void:
 
 func update_turn() -> void:
 	rset("current_turn", current_turn)
-	get_tree().get_root().get_node("world/score").update_current_player()
+#	get_tree().get_root().get_node("world/score").update_current_player()
 
 
 func _next_turn():
