@@ -157,21 +157,20 @@ margin_bottom = 58.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
-[node name="class_selection" type="Panel" parent="."]
-visible = false
+[node name="power_selection" type="Panel" parent="."]
 margin_left = 240.0
 margin_top = 20.0
 margin_right = 790.0
 margin_bottom = 120.0
 
-[node name="class_selection_label" type="Label" parent="class_selection"]
+[node name="power_selection_label" type="Label" parent="power_selection"]
 margin_left = 120.0
 margin_right = 420.0
 margin_bottom = 14.0
-text = "choose a class "
+text = "choose a power"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="class_selection"]
+[node name="HBoxContainer" type="HBoxContainer" parent="power_selection"]
 margin_left = 20.0
 margin_top = 30.0
 margin_right = 530.0
@@ -182,27 +181,34 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="warrior" type="Button" parent="class_selection/HBoxContainer"]
-margin_left = 227.0
-margin_right = 283.0
+[node name="none" type="Button" parent="power_selection/HBoxContainer"]
+margin_left = 197.0
+margin_right = 241.0
 margin_bottom = 40.0
-text = "warrior"
+text = "none"
 
-[node name="current_class_label" type="Label" parent="class_selection"]
+[node name="rewind" type="Button" parent="power_selection/HBoxContainer"]
+margin_left = 257.0
+margin_right = 312.0
+margin_bottom = 40.0
+text = "rewind"
+
+[node name="current_power_label" type="Label" parent="power_selection"]
 margin_left = 120.0
 margin_top = 80.0
 margin_right = 370.0
 margin_bottom = 94.0
-text = "Your current class is: "
+text = "Your current power is: "
 align = 1
 
-[node name="class_name" type="Label" parent="class_selection"]
+[node name="power_name" type="Label" parent="power_selection"]
 margin_left = 320.0
 margin_top = 80.0
 margin_right = 420.0
 margin_bottom = 94.0
-text = "warrior"
+text = "none"
 [connection signal="pressed" from="players/start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="connect/host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="connect/join" to="." method="_on_join_pressed"]
-[connection signal="pressed" from="class_selection/HBoxContainer/warrior" to="." method="_on_warrior_pressed"]
+[connection signal="pressed" from="power_selection/HBoxContainer/none" to="." method="_on_none_pressed"]
+[connection signal="pressed" from="power_selection/HBoxContainer/rewind" to="." method="_on_rewind_pressed"]

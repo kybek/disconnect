@@ -4,8 +4,10 @@ export var cols: int = 16
 export var rows: int = 9
 
 var stones: Dictionary = {}
+var moves: Array = []
 
 signal increased_score(who)
+signal decreased_score(who)
 
 
 func last_empty_row(col: int) -> int:
@@ -74,7 +76,8 @@ func move(col : int, by_who: String, id: int, color: Color) -> bool:
 	var stone_scene = load("res://src/stone.tscn")
 	var stone = stone_scene.instance()
 	
-	stone.get_node("by_who").text = str(by_who)
+	stone.get_node("by_who").text = by_who
+	stone.get_node("id").text = str(id)
 	stone.position = Vector2(col * 64 + 32, row * 64 + 32)
 	stone.get_node("sprite").modulate = color
 	add_child(stone)
@@ -84,6 +87,34 @@ func move(col : int, by_who: String, id: int, color: Color) -> bool:
 	
 	for i in range(score_after - score_before):
 		emit_signal("increased_score", id)
+	
+	moves.append([row, col])
+	
+	return true
+
+
+func undo_last_move() -> bool:
+	if len(moves) == 0:
+		return false
+	
+	var row: int = moves.back()[0]
+	var col: int = moves.back()[1]
+	moves.pop_back()
+	
+	assert(stones[row][col] != null)
+	
+	var stone = stones[row][col]
+	var color: Color = stone.get_node("sprite").modulate
+	var id: int = int(stone.get_node("id").text)
+	var score_before: int = how_many(color)
+	
+	remove_child(stone)
+	stones[row][col] = null
+	
+	var score_after: int = how_many(color)
+	
+	for i in range(score_before - score_after):
+		emit_signal("decreased_score", id)
 	
 	return true
 

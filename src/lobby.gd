@@ -49,11 +49,11 @@ func _on_host_pressed():
 	get_node("connect/error_label").text = ""
 
 	var player_name = get_node("connect/name").text
-	var _class_name = get_node("class_selection/class_name").text
+	var power_name = get_node("power_selection/power_name").text
 	
 	save_config()
 	
-	gamestate.host_game(player_name)
+	gamestate.host_game(player_name, power_name)
 	refresh_lobby()
 
 
@@ -72,11 +72,11 @@ func _on_join_pressed():
 	get_node("connect/join").disabled = true
 
 	var player_name = get_node("connect/name").text
-	var _class_name = get_node("class_selection/class_name").text
+	var power_name = get_node("power_selection/power_name").text
 	
 	save_config()
 	
-	gamestate.join_game(ip, player_name)
+	gamestate.join_game(ip, player_name, power_name)
 
 
 func _on_connection_success():
@@ -117,5 +117,9 @@ func _on_start_pressed():
 	gamestate.begin_game(int(get_node("connect/board_sizes/rows").text), int(get_node("connect/board_sizes/cols").text))
 
 
-func _on_warrior_pressed():
-	get_node("class_selection/class_name").text = "warrior"
+func _on_none_pressed():
+	get_node("power_selection/power_name").text = "none"
+
+
+func _on_rewind_pressed():
+	get_node("power_selection/power_name").text = "rewind"

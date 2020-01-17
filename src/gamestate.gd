@@ -9,6 +9,9 @@ const MAX_PEERS = 12
 # Name for myself
 var player_name: String = "The Warrior"
 
+# My power
+var power_name: String = "none"
+
 # Number of players
 var player_count: int = 1
 
@@ -96,12 +99,15 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 		if player_id == get_tree().get_network_unique_id():
 			# If node for this peer id, set name
 			player.set_player_name(player_name)
+			player.set_power_name(power_name)
 		else:
 			# Otherwise set name from peer
 			player.set_player_name(players[player_id])
+#			player.set_power_name(powers[player_id])
 		
 		if player_id == get_tree().get_network_unique_id():
 			player.connect("next_turn", self, "_next_turn")
+			player.connect("prev_turn", self, "_prev_turn")
 			player.can_input = true
 		world.get_node("players").add_child(player)
 	
@@ -137,15 +143,17 @@ remote func ready_to_start(id: int) -> void:
 		post_start_game()
 
 
-func host_game(new_player_name: String) -> void:
+func host_game(new_player_name: String, new_player_power: String) -> void:
 	player_name = new_player_name
+	power_name = new_player_power
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 
 
-func join_game(ip: String, new_player_name: String) -> void:
+func join_game(ip: String, new_player_name: String, new_player_power: String) -> void:
 	player_name = new_player_name
+	power_name = new_player_power
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
@@ -194,6 +202,12 @@ func update_turn() -> void:
 func _next_turn():
 	assert(player_count > 0)
 	current_turn = (current_turn + 1) % player_count
+	update_turn()
+
+
+func _prev_turn():
+	assert(player_count > 0)
+	current_turn = (current_turn - 1 + player_count) % player_count
 	update_turn()
 
 
