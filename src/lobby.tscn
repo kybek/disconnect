@@ -68,7 +68,7 @@ margin_right = 173.0
 margin_bottom = 54.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-text = "Isimsiz Kullanici"
+text = "Unnamed"
 
 [node name="ip_label" type="Label" parent="connect"]
 margin_left = 15.0
@@ -158,6 +158,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="class_selection" type="Panel" parent="."]
+visible = false
 margin_left = 240.0
 margin_top = 20.0
 margin_right = 790.0
