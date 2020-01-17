@@ -39,10 +39,6 @@ func set_turn(new_turn: int) -> void:
 	turn = new_turn
 
 
-func set_class(new_class: String) -> void:
-	_class_name = new_class
-
-
 func _ready():
 	randomize()
 	color = Color(randf(), randf(), randf(), 1.0)

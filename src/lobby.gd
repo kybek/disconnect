@@ -2,7 +2,7 @@ extends Control
 
 var config : ConfigFile = null
 
-
+# Load configuration file if stored in user://settings.cfg
 func load_config() -> bool:
 	config = ConfigFile.new()
 	var err = config.load("user://settings.cfg")
@@ -15,14 +15,18 @@ func load_config() -> bool:
 		print_debug(err)
 		return false
 
-
-func save_config() -> void:
+# Save current configuration
+func save_config() -> bool:
 	config = ConfigFile.new()
-	
 	config.set_value("network", "ip", get_node("connect/ip").text)
 	config.set_value("network", "username", get_node("connect/name").text)
+	var err = config.save("user://settings.cfg")
 	
-	config.save("user://settings.cfg")
+	if err == OK:
+		return true
+	else:
+		print_debug(err)
+		return false
 
 
 func _ready():

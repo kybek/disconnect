@@ -6,16 +6,17 @@ const DEFAULT_PORT = 6007
 # Max number of players
 const MAX_PEERS = 12
 
-# Name for my player
+# Name for myself
 var player_name: String = "The Warrior"
 
+# Number of players
 var player_count: int = 1
 
-# Names for remote players in id:name format
+# Names for remote players in id:name format (excluding self)
 var players: Dictionary = {}
-
+# Names for remote players in id:name format
 var player_names: Dictionary = {}
-
+# Id's for remote players in turn:id format
 var player_turns: Dictionary = {}
 
 remote var current_turn: int = 0
@@ -69,7 +70,7 @@ func unregister_player(id) -> void:
 	players.erase(id)
 	emit_signal("player_list_changed")
 
-
+# Set the game world and players for given parameters
 remote func pre_start_game(spawn_points: Dictionary, rows: int, cols: int) -> void:
 	player_names = players
 	player_names[get_tree().get_network_unique_id()] = player_name
