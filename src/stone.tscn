@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://src/round_shader.shader" type="Shader" id=1]
+[ext_resource path="res://src/round.shader" type="Shader" id=1]
 [ext_resource path="res://assets/checker.png" type="Texture" id=2]
 
 [sub_resource type="ShaderMaterial" id=1]
@@ -32,3 +32,8 @@ text = "asdadsads"
 align = 1
 valign = 1
 autowrap = true
+
+[node name="id" type="Label" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
