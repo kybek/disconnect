@@ -15,5 +15,7 @@ Press F5 to play
 
 # Assets
 Grass tile is from https://opengameart.org/content/map-tile
+
 Background is from https://opengameart.org/content/tiling-pattern-64x64-px-various-shades
+
 Checkers are from https://opengameart.org/content/checkers
