@@ -1,44 +1,48 @@
 extends HBoxContainer
 
+# Player label dictionary
+#   "name":		Name of the player
+#   "label":	Label assigned to the player
+#   "score":	Score of the player
 var player_labels = {}
 
+# Increases score on all peers for specified player
+sync func increase_score(player_id: int) -> void:
+	assert(player_id in player_labels)
+	
+	var player_entry : Dictionary = player_labels[player_id]
+	player_entry.score += 1
+	player_entry.label.set_text(player_entry.name + "\n" + str(player_entry.score))
 
-sync func increase_score(for_who: int) -> void:
-	assert(for_who in player_labels)
-	var pl = player_labels[for_who]
-	pl.score += 1
-	pl.label.set_text(pl.name + "\n" + str(pl.score))
-
-
-func add_player(id: int, new_player_name: String) -> void:
-	var l: Label = Label.new()
-	l.set_align(Label.ALIGN_CENTER)
-	l.set_text(new_player_name + "\n" + "0")
-	l.set_h_size_flags(SIZE_EXPAND_FILL)
-	var font = DynamicFont.new()
+# Add a new player to score table
+func add_player(player_id: int, player_name: String) -> void:
+	assert(not player_id in player_labels)
+	
+	var label: Label = Label.new()
+	label.set_align(Label.ALIGN_CENTER)
+	label.set_text(player_name + "\n" + "0")
+	label.set_h_size_flags(SIZE_EXPAND_FILL)
+	
+	var font: DynamicFont = DynamicFont.new()
 	font.set_size(18)
 	font.set_font_data(preload("res://assets/fonts/octavius.ttf"))
-	l.add_font_override("font", font)
-	l.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
-	add_child(l)
+	label.add_font_override("font", font)
+	label.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
+	
+	add_child(label)
 
-	player_labels[id] = { name = new_player_name, label = l, score = 0 }
+	player_labels[player_id] = {
+		"name": player_name,
+		"label": label,
+		"score": 0
+	}
 
-
+# Update current player label
 func update_current_player() -> void:
 	var current_turn: int = gamestate.current_turn
-	var current_player: String = ""
-	
-	current_turn += 1
-	
-	for pl in gamestate.player_names.values():
-		if current_turn <= 0:
-			break
-		
-		current_player = pl
-		current_turn -= 1
-	
-	get_node("current_player").set_text("Current Player\n" + current_player)
+	var current_player_id: int = gamestate.player_turns[current_turn]
+	var current_player_name: String = gamestate.player_names[current_player_id]
+	get_node("current_player").set_text("Current Player\n" + current_player_name)
 
 
 func _ready():

@@ -16,6 +16,8 @@ var players: Dictionary = {}
 
 var player_names: Dictionary = {}
 
+var player_turns: Dictionary = {}
+
 remote var current_turn: int = 0
 
 # Signals to let lobby GUI know what's going on
@@ -89,6 +91,7 @@ remote func pre_start_game(spawn_points: Dictionary, rows: int, cols: int) -> vo
 		player.set_name(str(p_id)) # Use unique ID as node name
 		player.position=spawn_pos
 		player.turn=spawn_points[p_id]
+		player_turns[spawn_points[p_id]] = p_id
 		player.set_network_master(p_id) #set unique id as master
 		
 		if p_id == get_tree().get_network_unique_id():
@@ -106,6 +109,8 @@ remote func pre_start_game(spawn_points: Dictionary, rows: int, cols: int) -> vo
 	# Set up score
 	for pn in players:
 		world.get_node("score").add_player(pn, players[pn])
+	
+	world.get_node("score").update_current_player()
 
 	if not get_tree().is_network_server():
 		# Tell server we are ready to start

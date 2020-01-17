@@ -10,11 +10,10 @@ func load_config() -> bool:
 	if err == OK:
 		get_node("connect/ip").text = config.get_value("network", "ip", "127.0.0.1")
 		get_node("connect/name").text = config.get_value("network", "username", "Unnamed")
-		
-		config.save("user://settings.cfg")
 		return true
-	
-	return false
+	else:
+		print_debug(err)
+		return false
 
 
 func save_config() -> void:
