@@ -18,11 +18,12 @@ _global_script_class_icons={
 config/name="Disconnect"
 run/main_scene="res://src/lobby.tscn"
 boot_splash/bg_color=Color( 0.054902, 0.6, 0.235294, 1 )
-config/icon="res://assets/grass_tile.png"
+config/icon="res://assets/checker.png"
 
 [autoload]
 
 gamestate="*res://src/gamestate.gd"
+custominput="res://src/custominput.gd"
 
 [rendering]
 
