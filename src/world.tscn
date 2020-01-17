@@ -61,7 +61,6 @@ margin_bottom = 27.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 1.25, 1.25 )
 
 [node name="baseground" type="TextureRect" parent="."]
 show_behind_parent = true
