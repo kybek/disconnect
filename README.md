@@ -13,6 +13,9 @@ Download godot from https://godotengine.org/download
 Run godot, and select `Import` then open the downloaded directory and select `project.godot`
 Press F5 to play
 
-# To do
+# Assets
+Grass tile is from https://opengameart.org/content/map-tile
 
-https://www.reddit.com/r/godot/comments/89cu19/exporting_and_publishing_your_games_automagically/
+Background is from https://opengameart.org/content/tiling-pattern-64x64-px-various-shades
+
+Checkers are from https://opengameart.org/content/checkers
