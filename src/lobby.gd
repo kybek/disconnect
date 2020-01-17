@@ -1,6 +1,32 @@
 extends Control
 
+var config : ConfigFile = null
+
+func load_config() -> bool:
+	config = ConfigFile.new()
+	var err = config.load("user://settings.cfg")
+	
+	if err == OK:
+		print("SUCCESSFULY LOADED")
+		get_node("connect/ip").text = config.get_value("network", "ip", "127.0.0.1")
+		get_node("connect/name").text = config.get_value("network", "username", "Unnamed")
+		
+		config.save("user://settings.cfg")
+		return true
+	
+	return false
+
+func save_config():
+	config = ConfigFile.new()
+	
+	config.set_value("network", "ip", get_node("connect/ip").text)
+	config.set_value("network", "username", get_node("connect/name").text)
+	
+	config.save("user://settings.cfg")
+
 func _ready():
+	load_config()
+	
 	# Called every time the node is added to the scene.
 	gamestate.connect("connection_failed", self, "_on_connection_failed")
 	gamestate.connect("connection_succeeded", self, "_on_connection_success")
@@ -20,6 +46,9 @@ func _on_host_pressed():
 
 	var player_name = get_node("connect/name").text
 	var _class_name = get_node("class_selection/class_name").text
+	
+	save_config()
+	
 	gamestate.host_game(player_name)
 	refresh_lobby()
 
@@ -40,6 +69,9 @@ func _on_join_pressed():
 
 	var player_name = get_node("connect/name").text
 	var _class_name = get_node("class_selection/class_name").text
+	
+	save_config()
+	
 	gamestate.join_game(ip, player_name)
 	# refresh_lobby() gets called by the player_list_changed signal
 
