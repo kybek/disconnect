@@ -58,7 +58,7 @@ func _ready():
 	l.set("custom_colors/font_color", Color(0.0, 0.0, 0.0, 1.0))
 	add_child(l)
 	
-	set_process(true)
+#	set_process(true)
 
 
 func _on_exit_game_pressed():
