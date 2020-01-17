@@ -1,15 +1,15 @@
 extends Node2D
 
-export var cols : int = 16
-export var rows : int = 9
+export var cols: int = 16
+export var rows: int = 9
 
-var stones := {}
+var stones: Dictionary = {}
 
-signal increase_score(who)
+signal increased_score(who)
 
-func last_empty_row(col : int) -> int:
-	if not (col >= 0 && col < cols):
-		print("INVALID COLOUMN NUMBER: " + str(col))
+
+func last_empty_row(col: int) -> int:
+	if col < 0 or col >= cols:
 		return -1
 	
 	for row in range(rows - 1, -1, -1):
@@ -19,7 +19,7 @@ func last_empty_row(col : int) -> int:
 	return -1
 
 
-const dirs = [
+const dirs: Array = [
 	[0, -1],
 	[1, -1],
 	[1, 0],
@@ -31,11 +31,11 @@ const dirs = [
 ]
 
 
-func out_of_range(row : int, col : int) -> bool:
+func out_of_range(row: int, col: int) -> bool:
 	return row < 0 or row >= rows or col < 0 or col >= cols
 
 
-func four_connect(row : int, col : int, dir : Array, color : Color) -> bool:
+func four_connect(row: int, col: int, dir: Array, color: Color) -> bool:
 	for i in range(0, 4):
 		if out_of_range(row, col):
 			return false
@@ -49,7 +49,7 @@ func four_connect(row : int, col : int, dir : Array, color : Color) -> bool:
 	return true
 
 
-func how_many(color : Color) -> int:
+func how_many(color: Color) -> int:
 	var cnt : int = 0
 	
 	for row in range(0, rows):
@@ -60,9 +60,8 @@ func how_many(color : Color) -> int:
 	
 	return cnt / 2
 
-func move(col : int, by_who : String, id : int, color : Color) -> bool:
-	print(col, by_who, color)
-	print("TRYING TO MAKE A MOVE")
+
+func move(col : int, by_who: String, id: int, color: Color) -> bool:
 	assert(stones != {})
 	
 	var row = last_empty_row(col)
@@ -84,7 +83,7 @@ func move(col : int, by_who : String, id : int, color : Color) -> bool:
 	var score_after = how_many(color)
 	
 	for i in range(score_after - score_before):
-		emit_signal("increase_score", id)
+		emit_signal("increased_score", id)
 	
 	return true
 
@@ -97,7 +96,7 @@ func _input(event):
 			get_node("../background/highlight").rect_position = Vector2(col * 64.0, 0.0)
 
 
-func make_board(rows : int, cols : int):
+func make_board(rows: int, cols: int):
 	assert(rows > 0 and rows <= 9)
 	assert(cols > 0 and cols <= 16)
 	
@@ -125,8 +124,3 @@ func make_board(rows : int, cols : int):
 	get_node("../Camera2D").position = Vector2(cols * 64.0 / 2, rows * 64.0 / 2)
 	get_node("../score").rect_position = Vector2(cols * 64.0 / 2 - 512, rows * 64.0 / 2 - 300)
 	get_node("../score").update_current_player()
-
-
-func _ready():
-#	make_board(9, 16)
-	pass

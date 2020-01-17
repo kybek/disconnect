@@ -70,4 +70,4 @@ margin_right = 1024.0
 margin_bottom = 600.0
 texture = ExtResource( 6 )
 stretch_mode = 2
-[connection signal="increase_score" from="board" to="score" method="_on_board_increase_score"]
+[connection signal="increased_score" from="board" to="score" method="_on_board_increased_score"]
