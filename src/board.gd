@@ -123,7 +123,7 @@ func _input(event):
 	if event is InputEventMouse:
 		var col = floor(get_global_mouse_position().x / 64.0)
 		
-		if col < cols:
+		if col >= 0 and col < cols:
 			get_node("../background/highlight").rect_position = Vector2(col * 64.0, 0.0)
 
 
