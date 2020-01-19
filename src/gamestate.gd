@@ -17,10 +17,18 @@ var player_count: int = 1
 
 # Names for remote players in id:name format (excluding self)
 var players: Dictionary = {}
-# Names for remote players in id:name format
+
+# Names for players in id:name format
 var player_names: Dictionary = {}
-# Id's for remote players in turn:id format
+
+# Id's for players in turn:id format
 var player_turns: Dictionary = {}
+
+# The world (and the board as a child)
+var world: Node = null
+
+# Colors for players in id:color format
+remote var player_colors: Dictionary = {}
 
 remote var current_turn: int = 0
 
@@ -79,12 +87,12 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 	player_names[get_tree().get_network_unique_id()] = player_name
 	
 	# Change scene
-	var world = load("res://src/world.tscn").instance()
+	world = preload("res://src/world.tscn").instance()
 	get_tree().get_root().add_child(world)
 	get_tree().get_root().get_node("lobby").hide()
 	world.get_node("board").make_board(rows, cols)
 	
-	var player_scene = load("res://src/player.tscn")
+	var player_scene = preload("res://src/player.tscn")
 	
 	player_count = len(order)
 	
@@ -93,26 +101,26 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 		
 		player.set_name(str(player_id)) # Use unique ID as node name
 		player.my_turn = order[player_id]
+		player.color = player_colors[player_id]
 		player_turns[order[player_id]] = player_id
-		player.set_network_master(player_id) #set unique id as master
+		player.set_network_master(1) # set server (ID: 1) as master
 		
 		if player_id == get_tree().get_network_unique_id():
 			# If node for this peer id, set name
-			player.set_player_name(player_name)
-			player.set_power_name(power_name)
+			player.player_name = player_name
+			player.power_name = power_name
 		else:
 			# Otherwise set name from peer
-			player.set_player_name(players[player_id])
+			player.player_name = players[player_id]
 		
 		if player_id == get_tree().get_network_unique_id():
-			player.connect("next_turn", self, "_next_turn")
-			player.connect("prev_turn", self, "_prev_turn")
 			player.can_input = true
+		
 		world.get_node("players").add_child(player)
 	
 	# Set up score
-	for pn in players:
-		world.get_node("score").add_player(pn, players[pn])
+	for player_id in players:
+		world.get_node("score").add_player(player_id, players[player_id])
 	
 	world.get_node("score").update_current_player()
 
@@ -168,17 +176,25 @@ func get_player_name() -> String:
 
 func begin_game(rows: int, cols: int) -> void:
 	assert(get_tree().is_network_server())
+	randomize()
 	
 	var order = {}
-	order[1] = 0 # Server in spawn point 0
+	
+	# Server
+	order[get_tree().get_network_unique_id()] = 0
+	player_colors[get_tree().get_network_unique_id()] = Color(randf(), randf(), randf(), 1.0)
 	var order_id = 1
 	
-	for p in players:
-		order[p] = order_id
+	for player_id in players:
+		order[player_id] = order_id
+		player_colors[player_id] = Color(randf(), randf(), randf(), 1.0)
 		order_id += 1
+	
+	rset("player_colors", player_colors)
+	
 	# Call to pre-start game with the spawn points
-	for p in players:
-		rpc_id(p, "pre_start_game", order, rows, cols)
+	for player_id in players:
+		rpc_id(player_id, "pre_start_game", order, rows, cols)
 	
 	pre_start_game(order, rows, cols)
 
@@ -195,19 +211,93 @@ func end_game() -> void:
 
 func update_turn() -> void:
 	rset("current_turn", current_turn)
-#	get_tree().get_root().get_node("world/score").update_current_player()
 
 
-func _next_turn():
+func _next_turn() -> void:
 	assert(player_count > 0)
 	current_turn = (current_turn + 1) % player_count
 	update_turn()
 
 
-func _prev_turn():
+func _prev_turn() -> void:
 	assert(player_count > 0)
 	current_turn = (current_turn - 1 + player_count) % player_count
 	update_turn()
+
+
+remote func _make_move(player_id: int, col: int) -> bool:
+	if not get_tree().get_rpc_sender_id() in [0, 1]:
+		print_debug("You are not the server")
+		return false
+	
+	return world.get_node("board").move(col, player_names[player_id], player_id, player_colors[player_id])
+
+
+sync func request_move(col: int) -> bool:
+	if (not get_tree().is_network_server()) or get_tree().get_network_unique_id() != 1:
+		print_debug("This node is not a server")
+		return false
+	
+	var player_id = get_tree().get_rpc_sender_id()
+	
+	if player_id == 0:
+		player_id = 1
+	
+	if not player_id in player_names:
+		print_debug("You are not a real player")
+		return false
+	
+	if player_turns[current_turn] != player_id:
+		print_debug("This is not your turn")
+		return false
+	
+	if not _make_move(player_id, col):
+		print_debug("Invalid move")
+		return false
+	
+	rpc("_make_move", player_id, col)
+	_next_turn()
+	return true
+
+
+remote func _rewind_move() -> bool:
+	if not get_tree().get_rpc_sender_id() in [0, 1]:
+		print_debug("You are not the server")
+		return false
+	
+	print_debug("Rewinding last moves")
+	for count in range(player_count):
+		if not world.get_node("board").undo_last_move():
+			return false
+	
+	return true
+
+
+sync func request_rewind() -> bool:
+	if (not get_tree().is_network_server()) or get_tree().get_network_unique_id() != 1:
+		print_debug("This node is not a server")
+		return false
+	
+	var player_id = get_tree().get_rpc_sender_id()
+	
+	if player_id == 0:
+		player_id = 1
+	
+	if not player_id in player_names:
+		print_debug("You are not a real player")
+		return false
+	
+	if player_turns[current_turn] != player_id:
+		print_debug("This is not your turn")
+		return false
+	
+	if not _rewind_move():
+		print_debug("Rewind failed")
+		return false
+	
+	rpc("_rewind_move")
+	return true
+
 
 
 func _ready():
