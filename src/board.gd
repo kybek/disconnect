@@ -95,7 +95,7 @@ func move(col : int, by_who: String, id: int, color: Color) -> bool:
 
 func undo_last_move() -> bool:
 	if len(moves) == 0:
-		return true
+		return false
 	
 	var row: int = moves.back()[0]
 	var col: int = moves.back()[1]
