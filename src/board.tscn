@@ -4,3 +4,8 @@
 
 [node name="board" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="borders" type="Line2D" parent="."]
+width = 5.0
+default_color = Color( 0, 0, 0, 1 )
+texture_mode = 0
