@@ -193,21 +193,34 @@ func get_player_name() -> String:
 
 func begin_game(rows: int, cols: int) -> void:
 	assert(get_tree().is_network_server())
+	
 	randomize()
+	
+	# Server
+	player_colors[get_tree().get_network_unique_id()] = Color(randf(), randf(), randf(), 1.0)
+	
+	for player_id in players:
+		player_colors[player_id] = Color(randf(), randf(), randf(), 1.0)
+	
+	rset("player_colors", player_colors)
+	
+	var turns_to_pick_from: Array = []
+	
+	for i in range(0, len(player_colors)):
+		turns_to_pick_from.append(i)
+	
+	turns_to_pick_from.shuffle()
 	
 	var order = {}
 	
 	# Server
-	order[get_tree().get_network_unique_id()] = 0
-	player_colors[get_tree().get_network_unique_id()] = Color(randf(), randf(), randf(), 1.0)
+	order[get_tree().get_network_unique_id()] = turns_to_pick_from[0]
+	
 	var order_id = 1
 	
 	for player_id in players:
-		order[player_id] = order_id
-		player_colors[player_id] = Color(randf(), randf(), randf(), 1.0)
+		order[player_id] = turns_to_pick_from[order_id]
 		order_id += 1
-	
-	rset("player_colors", player_colors)
 	
 	# Call to pre-start game with the spawn points
 	for player_id in players:
