@@ -32,6 +32,7 @@ stretch_mode = 2
 [node name="turns" type="Node2D" parent="."]
 
 [node name="score" type="HBoxContainer" parent="."]
+visible = false
 margin_right = 1024.0
 margin_bottom = 40.0
 size_flags_horizontal = 2

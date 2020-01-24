@@ -10,14 +10,6 @@ var power_uses: int = 0
 signal next_turn
 signal prev_turn
 
-#
-#sync func move(col: int, by_who: String, color: Color) -> void:
-#	get_node("../../board").move(col, by_who, get_tree().get_rpc_sender_id(), color)
-#
-#
-#sync func undo_last_move() -> void:
-#	get_node("../../board").undo_last_move()
-
 
 func _process(_delta):
 	var current_turn: int = gamestate.current_turn
@@ -27,6 +19,18 @@ func _process(_delta):
 			var col = floor(get_global_mouse_position().x / 64.0)
 			gamestate.rpc_id(1, "request_move", col)
 	
-	if can_input and Input.is_action_just_pressed("use_power"):
+	if can_input and Input.is_action_just_pressed("use_power") and power_uses > 0:
 		if power_name == "rewind":
 			gamestate.rpc_id(1, "request_rewind")
+	
+	if can_input:
+		if Input.is_action_pressed("ui_focus_next"):
+			get_node("../../board").modulate = Color(0.5, 0.5, 0.5, 0.5)
+			get_node("../../background").modulate = Color(0.5, 0.5, 0.5, 0.5)
+			get_node("../../baseground").modulate = Color(0.5, 0.5, 0.5, 1.0)
+			get_node("../../score").show()
+		else:
+			get_node("../../board").modulate = Color(1.0, 1.0, 1.0, 1.0)
+			get_node("../../background").modulate = Color(1.0, 1.0, 1.0, 1.0)
+			get_node("../../baseground").modulate = Color(1.0, 1.0, 1.0, 1.0)
+			get_node("../../score").hide()
