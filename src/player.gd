@@ -5,6 +5,7 @@ var color: Color
 var my_turn: int = -1
 var player_name
 var can_input: bool = false
+var power_uses: int = 0
 
 signal next_turn
 signal prev_turn

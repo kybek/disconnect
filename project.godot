@@ -24,6 +24,7 @@ config/icon="res://assets/checker.png"
 
 gamestate="*res://src/gamestate.gd"
 custominput="res://src/custominput.gd"
+powers="*res://src/powers.gd"
 
 [rendering]
 

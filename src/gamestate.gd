@@ -24,6 +24,12 @@ var player_names: Dictionary = {}
 # Id's for players in turn:id format
 var player_turns: Dictionary = {}
 
+# Powers for players in id:power format
+var player_powers: Dictionary = {}
+
+# Number of power uses left for players in id:count format
+var player_power_uses: Dictionary = {}
+
 # The world (and the board as a child)
 var world: Node = null
 
@@ -42,7 +48,7 @@ signal game_error(what)
 # Callback from SceneTree
 func _player_connected(id):
 	# Registration of a client beings here, tell the connected player that we are here
-	rpc_id(id, "register_player", player_name)
+	rpc_id(id, "register_player", player_name, power_name)
 
 # Callback from SceneTree
 func _player_disconnected(id):
@@ -70,21 +76,28 @@ func _connected_fail():
 	emit_signal("connection_failed")
 
 # Lobby management functions
-remote func register_player(new_player_name: String) -> void:
+remote func register_player(new_player_name: String, new_power_name: String) -> void:
+	if not new_power_name in powers.power_names:
+		print("There is no power called " + new_power_name + ", " + new_player_name + " is cheating.")
+		return
+	
 	var id = get_tree().get_rpc_sender_id()
 	print(str(id) + " is joined as " + new_player_name)
 	players[id] = new_player_name
+	player_powers[id] = power_name
 	emit_signal("player_list_changed")
 
 
 func unregister_player(id) -> void:
 	players.erase(id)
+	player_powers.erase(id)
 	emit_signal("player_list_changed")
 
 # Set the game world and players for given parameters
 remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 	player_names = players
 	player_names[get_tree().get_network_unique_id()] = player_name
+	player_powers[get_tree().get_network_unique_id()] = power_name
 	
 	# Change scene
 	world = preload("res://src/world.tscn").instance()
@@ -111,7 +124,11 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 			player.power_name = power_name
 		else:
 			# Otherwise set name from peer
-			player.player_name = players[player_id]
+			player.player_name = player_names[player_id]
+			player.power_name = player_powers[player_id]
+		
+		player.power_uses = powers.cap[power_name]
+		player_power_uses[player_id] = player.power_uses
 		
 		if player_id == get_tree().get_network_unique_id():
 			player.can_input = true
@@ -225,11 +242,7 @@ func _prev_turn() -> void:
 	update_turn()
 
 
-remote func _make_move(player_id: int, col: int) -> bool:
-	if not get_tree().get_rpc_sender_id() in [0, 1]:
-		print_debug("You are not the server")
-		return false
-	
+remote func _make_move(player_id: int, col: int) -> bool:	
 	return world.get_node("board").move(col, player_names[player_id], player_id, player_colors[player_id])
 
 
@@ -260,17 +273,18 @@ sync func request_move(col: int) -> bool:
 	return true
 
 
-remote func _rewind_move() -> bool:
-	if not get_tree().get_rpc_sender_id() in [0, 1]:
-		print_debug("You are not the server")
-		return false
-	
+remote func _rewind_move() -> bool:	
 	print_debug("Rewinding last moves")
 	for count in range(player_count):
 		if not world.get_node("board").undo_last_move():
 			return false
 	
 	return true
+
+
+sync func _decrease_power_count(player_id: int) -> void:
+	player_power_uses[player_id] -= 1
+	world.get_node("players").get_node(str(player_id)).power_uses -= 1
 
 
 sync func request_rewind() -> bool:
@@ -291,10 +305,19 @@ sync func request_rewind() -> bool:
 		print_debug("This is not your turn")
 		return false
 	
+	if player_powers[player_id] != "rewind":
+		print_debug("This is not your power")
+		return false
+	
+	if player_power_uses[player_id] == 0:
+		print_debug("You have used all of your power")
+		return false
+	
 	if not _rewind_move():
 		print_debug("Rewind failed")
 		return false
 	
+	rpc("_decrease_power_count", player_id)
 	rpc("_rewind_move")
 	return true
 
