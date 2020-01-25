@@ -8,9 +8,14 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "HBoxContainer",
+"class": "ScoreLabel",
+"language": "GDScript",
+"path": "res://src/score_label.gd"
+} ]
 _global_script_class_icons={
-
+"ScoreLabel": ""
 }
 
 [application]

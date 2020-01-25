@@ -31,17 +31,19 @@ stretch_mode = 2
 
 [node name="turns" type="Node2D" parent="."]
 
-[node name="score" type="HBoxContainer" parent="."]
+[node name="score" type="Panel" parent="."]
 visible = false
 margin_right = 1024.0
-margin_bottom = 40.0
+margin_bottom = 600.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 script = ExtResource( 5 )
 
-[node name="current_turn" type="Label" parent="score"]
-margin_top = 13.0
-margin_bottom = 27.0
+[node name="container" type="VBoxContainer" parent="score"]
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 974.0
+margin_bottom = 550.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

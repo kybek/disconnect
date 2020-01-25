@@ -48,7 +48,7 @@ size_flags_vertical = 2
 margin_left = 370.0
 margin_top = 157.0
 margin_right = 647.0
-margin_bottom = 324.0
+margin_bottom = 349.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
@@ -150,6 +150,14 @@ margin_right = 233.0
 margin_bottom = 24.0
 text = "6"
 align = 1
+
+[node name="time_limit" type="Label" parent="connect"]
+visible = false
+margin_left = 17.1
+margin_top = 161.0
+margin_right = 57.1
+margin_bottom = 170.75
+text = "Time Limit (in seconds): "
 
 [node name="error" type="AcceptDialog" parent="."]
 margin_right = 83.0

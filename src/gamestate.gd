@@ -137,7 +137,7 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 	
 	# Set up score
 	for player_id in players:
-		world.get_node("score").add_player(player_id, players[player_id])
+		world.get_node("score").add_player(player_id, players[player_id], player_powers[player_id])
 	
 	world.get_node("score").update_current_player()
 
@@ -332,6 +332,7 @@ sync func request_rewind() -> bool:
 	
 	rpc("_decrease_power_count", player_id)
 	rpc("_rewind_move")
+	world.get_node("score").rpc("decrease_power_uses", player_id)
 	return true
 
 

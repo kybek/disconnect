@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/score_label.gd" type="Script" id=1]
+
+[node name="score_label" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+grow_horizontal = 2
+size_flags_horizontal = 7
+alignment = 1
+script = ExtResource( 1 )
+
+[node name="player_name" type="Label" parent="."]
+margin_top = 13.0
+margin_right = 81.0
+margin_bottom = 27.0
+size_flags_horizontal = 7
+text = "player_name"
+
+[node name="score" type="Label" parent="."]
+margin_left = 85.0
+margin_top = 13.0
+margin_right = 120.0
+margin_bottom = 27.0
+size_flags_horizontal = 7
+text = "score"
+
+[node name="power" type="Label" parent="."]
+margin_left = 124.0
+margin_top = 13.0
+margin_right = 163.0
+margin_bottom = 27.0
+size_flags_horizontal = 7
+text = "power"
+
+[node name="power_uses" type="Label" parent="."]
+margin_left = 167.0
+margin_top = 13.0
+margin_right = 242.0
+margin_bottom = 27.0
+size_flags_horizontal = 7
+text = "power_uses"
+align = 1
