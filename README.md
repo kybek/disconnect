@@ -38,10 +38,11 @@ Before Beta Version 6, the following will be discussed and/or implemented.
 - [X] #16 (Some kind of indicator about how many power uses left)
 - [X] #17 (See other players' power types (and possibly remaining uses))
 - [X] #18 (Scoreboard is blocked by the board when board size is 16x9)
-- [ ] Option to change the color of oneself
+- [X] Option to change the color of oneself
 - [ ] Option to change the color of highlighting
 - [ ] Option to change the background
 - [ ] Option to change the font size, font style, font color
 - [ ] Option to change the appearance of the pieces of oneself
 - [X] Board borders
 - [X] Scoreboard (viewed via TAB button)
+- [ ] Old screen effect (optional, with shader)
