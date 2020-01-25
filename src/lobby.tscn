@@ -151,13 +151,18 @@ margin_bottom = 24.0
 text = "6"
 align = 1
 
-[node name="time_limit" type="Label" parent="connect"]
-visible = false
-margin_left = 17.1
+[node name="color_label" type="Label" parent="connect"]
+margin_left = 17.0
 margin_top = 161.0
-margin_right = 57.1
-margin_bottom = 170.75
-text = "Time Limit (in seconds): "
+margin_right = 85.0
+margin_bottom = 175.0
+text = "Your color:"
+
+[node name="color" type="ColorPickerButton" parent="connect"]
+margin_left = 89.8912
+margin_top = 158.24
+margin_right = 146.891
+margin_bottom = 178.24
 
 [node name="error" type="AcceptDialog" parent="."]
 margin_right = 83.0

@@ -87,7 +87,7 @@ func _ready():
 	font.set_size(18)
 	font.set_font_data(preload("res://assets/fonts/octavius.ttf"))
 	label.add_font_override("font", font)
-	label.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
+#	label.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
 	
 	get_node("container").add_child(label)
 	
@@ -100,8 +100,6 @@ func _ready():
 	info_label.set_power_uses("power uses")
 	
 	get_node("container").add_child(info_label)
-	
-#	set_process(true)
 
 
 func _on_exit_game_pressed():

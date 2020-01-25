@@ -32,4 +32,4 @@ func _ready():
 			font.set_size(18)
 			font.set_font_data(preload("res://assets/fonts/octavius.ttf"))
 			child.add_font_override("font", font)
-			child.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))
+#			child.set("custom_colors/font_color", Color(1.0, 0.0, 0.0, 1.0))

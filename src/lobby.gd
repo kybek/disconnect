@@ -10,6 +10,10 @@ func load_config() -> bool:
 	if err == OK:
 		get_node("connect/ip").text = config.get_value("network", "ip", "127.0.0.1")
 		get_node("connect/name").text = config.get_value("network", "username", "Unnamed")
+		randomize()
+		get_node("connect/color").color.r = config.get_value("player", "color_r", randi() % 256)
+		get_node("connect/color").color.g = config.get_value("player", "color_g", randi() % 256)
+		get_node("connect/color").color.b = config.get_value("player", "color_b", randi() % 256)
 		return true
 	else:
 		print_debug(err)
@@ -20,6 +24,9 @@ func save_config() -> bool:
 	config = ConfigFile.new()
 	config.set_value("network", "ip", get_node("connect/ip").text)
 	config.set_value("network", "username", get_node("connect/name").text)
+	config.set_value("player", "color_r", get_node("connect/color").color.r)
+	config.set_value("player", "color_g", get_node("connect/color").color.g)
+	config.set_value("player", "color_b", get_node("connect/color").color.b)
 	var err = config.save("user://settings.cfg")
 	
 	if err == OK:
@@ -48,12 +55,13 @@ func _on_host_pressed():
 	get_node("players").show()
 	get_node("connect/error_label").text = ""
 
-	var player_name = get_node("connect/name").text
-	var power_name = get_node("power_selection/power_name").text
+	var player_name: String = get_node("connect/name").text
+	var power_name: String = get_node("power_selection/power_name").text
+	var player_color: Color = get_node("connect/color").color
 	
 	save_config()
 	
-	gamestate.host_game(player_name, power_name)
+	gamestate.host_game(player_name, power_name, player_color)
 	refresh_lobby()
 
 
@@ -71,12 +79,13 @@ func _on_join_pressed():
 	get_node("connect/host").disabled = true
 	get_node("connect/join").disabled = true
 
-	var player_name = get_node("connect/name").text
-	var power_name = get_node("power_selection/power_name").text
+	var player_name: String = get_node("connect/name").text
+	var power_name: String = get_node("power_selection/power_name").text
+	var player_color: Color = get_node("connect/color").color
 	
 	save_config()
 	
-	gamestate.join_game(ip, player_name, power_name)
+	gamestate.join_game(ip, player_name, power_name, player_color)
 
 
 func _on_connection_success():

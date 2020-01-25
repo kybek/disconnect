@@ -12,6 +12,9 @@ var player_name: String = "The Warrior"
 # My power
 var power_name: String = "none"
 
+# My color
+var player_color: Color = Color(0.0, 0.0, 0.0, 1.0)
+
 # Number of players
 var player_count: int = 1
 
@@ -48,7 +51,7 @@ signal game_error(what)
 # Callback from SceneTree
 func _player_connected(id):
 	# Registration of a client beings here, tell the connected player that we are here
-	rpc_id(id, "register_player", player_name, power_name)
+	rpc_id(id, "register_player", player_name, power_name, player_color)
 
 # Callback from SceneTree
 func _player_disconnected(id):
@@ -76,7 +79,7 @@ func _connected_fail():
 	emit_signal("connection_failed")
 
 # Lobby management functions
-remote func register_player(new_player_name: String, new_power_name: String) -> void:
+remote func register_player(new_player_name: String, new_power_name: String, new_player_color: Color) -> void:
 	if not new_power_name in powers.power_names:
 		print("There is no power called " + new_power_name + ", " + new_player_name + " is cheating.")
 		return
@@ -85,6 +88,7 @@ remote func register_player(new_player_name: String, new_power_name: String) -> 
 	print(str(id) + " is joined as " + new_player_name)
 	players[id] = new_player_name
 	player_powers[id] = power_name
+	player_colors[id] = new_player_color
 	emit_signal("player_list_changed")
 
 
@@ -114,7 +118,6 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 		
 		player.set_name(str(player_id)) # Use unique ID as node name
 		player.my_turn = order[player_id]
-		player.color = player_colors[player_id]
 		player_turns[order[player_id]] = player_id
 		player.set_network_master(1) # set server (ID: 1) as master
 		
@@ -122,10 +125,13 @@ remote func pre_start_game(order: Dictionary, rows: int, cols: int) -> void:
 			# If node for this peer id, set name
 			player.player_name = player_name
 			player.power_name = power_name
+			player.color = player_color
+			player_colors[player_id] = player_color
 		else:
 			# Otherwise set name from peer
 			player.player_name = player_names[player_id]
 			player.power_name = player_powers[player_id]
+			player.color = player_colors[player_id]
 		
 		player.power_uses = powers.cap[power_name]
 		player_power_uses[player_id] = player.power_uses
@@ -167,17 +173,19 @@ remote func ready_to_start(id: int) -> void:
 		post_start_game()
 
 
-func host_game(new_player_name: String, new_player_power: String) -> void:
+func host_game(new_player_name: String, new_player_power: String, new_player_color: Color) -> void:
 	player_name = new_player_name
 	power_name = new_player_power
+	player_color = new_player_color
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(DEFAULT_PORT, MAX_PEERS)
 	get_tree().set_network_peer(host)
 
 
-func join_game(ip: String, new_player_name: String, new_player_power: String) -> void:
+func join_game(ip: String, new_player_name: String, new_player_power: String, new_player_color: Color) -> void:
 	player_name = new_player_name
 	power_name = new_player_power
+	player_color = new_player_color
 	var host = NetworkedMultiplayerENet.new()
 	host.create_client(ip, DEFAULT_PORT)
 	get_tree().set_network_peer(host)
@@ -194,20 +202,14 @@ func get_player_name() -> String:
 func begin_game(rows: int, cols: int) -> void:
 	assert(get_tree().is_network_server())
 	
-	randomize()
-	
-	# Server
-	player_colors[get_tree().get_network_unique_id()] = Color(randf(), randf(), randf(), 1.0)
-	
-	for player_id in players:
-		player_colors[player_id] = Color(randf(), randf(), randf(), 1.0)
-	
 	rset("player_colors", player_colors)
 	
 	var turns_to_pick_from: Array = []
 	
-	for i in range(0, len(player_colors)):
+	for i in range(0, len(players) + 1):
 		turns_to_pick_from.append(i)
+	
+	randomize()
 	
 	turns_to_pick_from.shuffle()
 	

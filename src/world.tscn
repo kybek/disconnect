@@ -33,6 +33,7 @@ stretch_mode = 2
 
 [node name="score" type="Panel" parent="."]
 visible = false
+modulate = Color( 1, 1, 1, 0.501961 )
 margin_right = 1024.0
 margin_bottom = 600.0
 size_flags_horizontal = 2
