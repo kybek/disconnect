@@ -45,4 +45,5 @@ Before Beta Version 6, the following will be discussed and/or implemented.
 - [ ] Option to change the appearance of the pieces of oneself
 - [X] Board borders
 - [X] Scoreboard (viewed via TAB button)
-- [ ] Old screen effect (optional, with shader)
+- [X] Old screen effect (optional, with shader) (modified from https://pastebin.com/LtwNM3da)
+- [ ] Fall animation for pieces
