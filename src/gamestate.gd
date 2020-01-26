@@ -90,6 +90,11 @@ remote func register_player(new_player_name: String, new_power_name: String, new
 	player_powers[id] = power_name
 	player_colors[id] = new_player_color
 	emit_signal("player_list_changed")
+	
+	# If we are the server, increase player count
+	if get_tree().get_network_unique_id() == 1:
+		player_count += 1
+		rset("player_count", player_count)
 
 
 func unregister_player(id) -> void:
@@ -202,11 +207,14 @@ func get_player_name() -> String:
 func begin_game(rows: int, cols: int) -> void:
 	assert(get_tree().is_network_server())
 	
+	player_colors[get_tree().get_network_unique_id()] = player_color
 	rset("player_colors", player_colors)
+	
+	print(player_names)
 	
 	var turns_to_pick_from: Array = []
 	
-	for i in range(0, len(players) + 1):
+	for i in range(0, player_count):
 		turns_to_pick_from.append(i)
 	
 	randomize()
