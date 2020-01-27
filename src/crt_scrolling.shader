@@ -3,7 +3,7 @@ shader_type canvas_item;
 // https://pastebin.com/LtwNM3da
  
 uniform float scan_line_count : hint_range(0, 1080) = 50.0;
-uniform bool scrolling = false;
+uniform bool scrolling = true;
 uniform float scroll_speed : hint_range(0.1, 99.9) = 50.0;
  
 vec2 uv_curve(vec2 uv) {

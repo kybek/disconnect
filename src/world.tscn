@@ -6,7 +6,7 @@
 [ext_resource path="res://assets/board_tile_2.png" type="Texture" id=4]
 [ext_resource path="res://src/highlight.shader" type="Shader" id=5]
 [ext_resource path="res://src/score.gd" type="Script" id=6]
-[ext_resource path="res://assets/background.png" type="Texture" id=7]
+[ext_resource path="res://assets/tile/tile_aqua.png" type="Texture" id=7]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 1 )
@@ -17,7 +17,7 @@ shader_param/scroll_speed = 50.0
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 1 )
 shader_param/scan_line_count = 50.0
-shader_param/scrolling = false
+shader_param/scrolling = true
 shader_param/scroll_speed = 50.0
 
 [sub_resource type="ShaderMaterial" id=3]
