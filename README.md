@@ -26,8 +26,6 @@ WIP - new powers will be added and balanced.
 - Rewind: When it is your turn, you can rewind all of the actions after your last turn and your last turn.
 
 # Assets
-Grass tile is from https://opengameart.org/content/map-tile by Ivan Voirol
-
 Background is from https://opengameart.org/content/tile by Jordan Irwin
 
 Checker piece is from https://opengameart.org/content/checkers by Andi Peredri
