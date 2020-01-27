@@ -78,17 +78,17 @@ func move(col : int, by_who: String, id: int, color: Color) -> bool:
 	
 	stone.get_node("by_who").text = by_who
 	stone.get_node("id").text = str(id)
-	stone.position = Vector2(col * 64 + 32, 0.0);
+	stone.position = Vector2(col * 64 + 32, -64.0);
 	stone.get_node("sprite").modulate = color
 	stone.show_behind_parent = true
 	stone.get_node("tween").interpolate_property(
 		stone,
 		"position",
-		Vector2(col * 64.0 + 32.0, 0.0),
+		Vector2(col * 64.0 + 32.0, -64.0),
 		Vector2(col * 64 + 32, row * 64 + 32),
-		0.3,
-		Tween.TRANS_LINEAR,
-		Tween.EASE_IN_OUT
+		0.75,
+		Tween.TRANS_CUBIC,
+		Tween.EASE_OUT
 	)
 	
 	add_child(stone)
