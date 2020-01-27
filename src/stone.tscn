@@ -37,3 +37,5 @@ autowrap = true
 visible = false
 margin_right = 40.0
 margin_bottom = 14.0
+
+[node name="tween" type="Tween" parent="."]

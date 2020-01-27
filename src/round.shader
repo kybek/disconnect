@@ -10,7 +10,7 @@ void fragment () {
 		COLOR = vec4(texture(TEXTURE, UV).xyz, 0.0);
 	}
 	else {
-		COLOR = vec4(texture(TEXTURE, UV).xyz, 0.8);
+		COLOR = vec4(texture(TEXTURE, UV).xyz, 1.0);
 	}
 // To discard the original texture
 //	if (dist > radius) {
