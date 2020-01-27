@@ -46,4 +46,4 @@ Before Beta Version 6, the following will be discussed and/or implemented.
 - [X] Board borders
 - [X] Scoreboard (viewed via TAB button)
 - [X] Old screen effect (optional, with shader) (modified from https://pastebin.com/LtwNM3da)
-- [ ] Fall animation for pieces
+- [X] Fall animation for pieces
