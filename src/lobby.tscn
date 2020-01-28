@@ -46,9 +46,9 @@ size_flags_vertical = 2
 
 [node name="connect" type="Panel" parent="."]
 margin_left = 370.0
-margin_top = 157.0
-margin_right = 647.0
-margin_bottom = 349.0
+margin_top = 150.0
+margin_right = 645.0
+margin_bottom = 340.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
@@ -185,9 +185,9 @@ align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="power_selection"]
 margin_left = 20.0
-margin_top = 30.0
+margin_top = 38.0
 margin_right = 530.0
-margin_bottom = 70.0
+margin_bottom = 58.0
 custom_constants/separation = 16
 alignment = 1
 __meta__ = {
@@ -197,13 +197,13 @@ __meta__ = {
 [node name="none" type="Button" parent="power_selection/HBoxContainer"]
 margin_left = 197.0
 margin_right = 241.0
-margin_bottom = 40.0
+margin_bottom = 20.0
 text = "none"
 
 [node name="rewind" type="Button" parent="power_selection/HBoxContainer"]
 margin_left = 257.0
 margin_right = 312.0
-margin_bottom = 40.0
+margin_bottom = 20.0
 text = "rewind"
 
 [node name="current_power_label" type="Label" parent="power_selection"]
