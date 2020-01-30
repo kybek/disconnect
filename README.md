@@ -1,6 +1,7 @@
 # disconnect
 
 A game based on 4-connect which you can sabotage your opponents.
+v1.1-beta.6
 
 # Installing
 
@@ -31,13 +32,6 @@ Background is from https://opengameart.org/content/tile by Jordan Irwin
 Checker piece is from https://opengameart.org/content/checkers by Andi Peredri
 
 # To-do List
-Before Beta Version 6, the following will be discussed and/or implemented.
-## GUI Overhaul
-- [X] #16 (Some kind of indicator about how many power uses left)
-- [X] #17 (See other players' power types (and possibly remaining uses))
-- [X] #18 (Scoreboard is blocked by the board when board size is 16x9)
-- [X] Option to change the color of oneself
-- [X] Board borders
-- [X] Scoreboard (viewed via TAB button)
-- [X] Old screen effect (optional, with shader) (modified from https://pastebin.com/LtwNM3da)
-- [X] Fall animation for pieces
+Before Beta Version 7, the following will be discussed and/or implemented.
+## Network Overhaul
+- [ ] Find a solution to the necessity of port forwarding and IP sharing.
