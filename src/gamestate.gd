@@ -209,6 +209,8 @@ func begin_game(rows: int, cols: int) -> void:
 	
 	player_colors[get_tree().get_network_unique_id()] = player_color
 	rset("player_colors", player_colors)
+	rset("player_powers", player_powers)
+	rset("player_power_uses", player_power_uses)
 	
 	print(player_names)
 	
