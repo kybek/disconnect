@@ -45,7 +45,7 @@ func add_player(player_id: int, player_name: String, power_name: String) -> void
 	assert(not player_id in player_labels)
 	
 	# Create a new label to assign to the new player
-	var label: Label = score_label_scene.instance()
+	var label: ScoreLabel = score_label_scene.instance()
 	label.set_align(Label.ALIGN_CENTER)
 	label.set_player_name(player_name)
 	label.set_score("0")
@@ -92,7 +92,7 @@ func _ready():
 	get_node("container").add_child(label)
 	
 	# Create scoreboard infos
-	var info_label: Label = score_label_scene.instance()
+	var info_label: ScoreLabel = score_label_scene.instance()
 	info_label.set_align(Label.ALIGN_CENTER)
 	info_label.set_player_name("player name")
 	info_label.set_score("score")

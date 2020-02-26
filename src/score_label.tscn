@@ -9,6 +9,9 @@ grow_horizontal = 2
 size_flags_horizontal = 7
 alignment = 1
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="player_name" type="Label" parent="."]
 margin_top = 13.0
