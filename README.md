@@ -1,6 +1,6 @@
 # disconnect
 
-A game based on 4-connect which you can sabotage your opponents.
+A game based on 4-connect in which you can sabotage your opponents.
 v1.1-beta.6
 
 # Installing
