@@ -5,9 +5,10 @@ v1.1-beta.6
 
 # Installing
 
+You can either download the latest release, or:
+
 Clone this repository 
 `git clone https://github.com/EnoughSensei/disconnect/`
-or download the latest release.
 
 Download godot from https://godotengine.org/download
 
