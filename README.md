@@ -1,8 +1,12 @@
-Also on https://draketrought.itch.io/disconnect
+# Current developing it as a discord bot, I don't plan on continuing it on foreseeable future.
+The discord bot version (disconnection): https://github.com/EnoughSensei/disconnection
 
 # disconnect
 
 A game based on connect-4 in which you can sabotage your opponents.
+
+Also on: https://draketrought.itch.io/disconnect
+
 v1.1-beta.6
 
 # Installing
@@ -14,7 +18,14 @@ Clone this repository
 
 Download godot from https://godotengine.org/download
 
-Run godot, and select `Import` then open the downloaded directory and select `project.godot`
+Run godot
+
+Select `Import` 
+
+Open the downloaded directory on import window
+
+Select `project.godot`
+
 Press F5 to play
 
 # Rules
